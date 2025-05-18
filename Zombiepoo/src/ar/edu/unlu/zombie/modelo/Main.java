@@ -54,6 +54,8 @@ public class Main {
 				//Una vez realizado descarte
 				 // Jugar 
 				 //manejo de juegos
+				 Boolean juegoEnCurso = true;
+				 
 	}
 
 }

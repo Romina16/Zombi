@@ -140,10 +140,18 @@ public class Jugador {
 	public void mezclarMano() {
 		Collections.shuffle(mano);
 	}
-
-	public void pedirCartaOtroJugador(Jugador jugadorDerecha) {
+//en su turno el jugador debe pedir una carta a otro
+	public void pedirCartaOtroJugador() {
 
 	}
+	// si le piden al jugador, entrega su carta
+	public Carta entregarCarta(Integer indice) {
+		Carta cartaEntregar = new Carta();
+		cartaEntregar = this.mano.get(indice);
+		this.mano.remove(cartaEntregar);
+		return cartaEntregar;
+	}
+
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	// gestion del turno
 	// public void turno(){

@@ -95,9 +95,26 @@ public class Zombie implements IObservable {
 	// Inicio - manejo de turnos
 	public void desarrolloDeTurnos() {
 		// Se inician los turnos
-		
+		Boolean juegoEnCurso = true;
+		while (juegoEnCurso) {
+			//desarrollo turnos
+			
+			//paso el prox jugador
+		}
 		// desarrollo de los turnos
 		// fin de juego es detectado
+	}
+	
+	public void turno(Jugador jugador) {
+		//jugador pide
+		
+		//Carta cartaRecibida = 
+			//	if (c)
+		//verificacion de cartas
+		//switch() {
+		//case:
+		//}
+		
 	}
 
 //------------------------------------------------------------------------------------------------------------------------
