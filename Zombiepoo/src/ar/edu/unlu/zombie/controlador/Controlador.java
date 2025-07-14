@@ -1,7 +1,7 @@
 package ar.edu.unlu.zombie.controlador;
 
-import ar.edu.unlu.zombie.modelo.Evento;
 import ar.edu.unlu.zombie.modelo.Zombie;
+import ar.edu.unlu.zombie.modelo.enumerados.Evento;
 import ar.edu.unlu.zombie.observador.IObservable;
 import ar.edu.unlu.zombie.observador.IObservador;
 import ar.edu.unlu.zombie.vista.VistaConsola;

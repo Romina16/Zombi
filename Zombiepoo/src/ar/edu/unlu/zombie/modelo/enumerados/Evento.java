@@ -1,4 +1,4 @@
-package ar.edu.unlu.zombie.modelo;
+package ar.edu.unlu.zombie.modelo.enumerados;
 
 public enum Evento {
 	AGREGAR_JUGADOR,//Agrega jugadores

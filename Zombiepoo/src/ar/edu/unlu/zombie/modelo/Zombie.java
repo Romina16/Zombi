@@ -6,6 +6,10 @@ import java.util.Queue;
 import java.util.ArrayList;
 
 import ar.edu.unlu.zombie.observador.IObservador;
+import ar.edu.unlu.zombie.modelo.entidades.Carta;
+import ar.edu.unlu.zombie.modelo.entidades.Jugador;
+import ar.edu.unlu.zombie.modelo.entidades.Mazo;
+import ar.edu.unlu.zombie.modelo.enumerados.Evento;
 import ar.edu.unlu.zombie.observador.IObservable;
 
 public class Zombie implements IObservable {

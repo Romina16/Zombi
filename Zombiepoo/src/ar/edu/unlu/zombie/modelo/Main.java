@@ -2,6 +2,9 @@ package ar.edu.unlu.zombie.modelo;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+//import ar.edu.unlu.zombie.modelo.entidades.Mazo;
+import ar.edu.unlu.zombie.modelo.entidades.*;
+
 public class Main {
 
 	public static void main(String[] args) {

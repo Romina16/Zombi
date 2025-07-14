@@ -1,10 +1,12 @@
-package ar.edu.unlu.zombie.modelo;
+package ar.edu.unlu.zombie.modelo.entidades;
 import java.util.Collections;
 import java.util.ArrayList;
 //import java.util.List;
 import java.util.Stack;
 import java.util.LinkedList;
-class Mazo {
+import ar.edu.unlu.zombie.modelo.enumerados.Tipo;
+
+public class Mazo {
 	private Stack<Carta> mazo = new Stack<Carta>();
 	
 	public Mazo() {

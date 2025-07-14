@@ -1,6 +1,8 @@
-package ar.edu.unlu.zombie.modelo;
+package ar.edu.unlu.zombie.modelo.entidades;
 
-class Carta {
+import ar.edu.unlu.zombie.modelo.enumerados.Tipo;
+
+public class Carta {
 	private Tipo tipo;
 	private Integer numero;
 	

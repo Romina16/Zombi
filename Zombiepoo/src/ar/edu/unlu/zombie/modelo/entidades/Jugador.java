@@ -1,4 +1,4 @@
-package ar.edu.unlu.zombie.modelo;
+package ar.edu.unlu.zombie.modelo.entidades;
 
 import java.util.Collections;
 import java.util.LinkedList;
