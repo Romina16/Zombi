@@ -11,11 +11,13 @@ import ar.edu.unlu.zombie.modelo.entidades.Jugador;
 import ar.edu.unlu.zombie.modelo.entidades.Mazo;
 import ar.edu.unlu.zombie.modelo.enumerados.Evento;
 import ar.edu.unlu.zombie.observador.IObservable;
+import ar.edu.unlu.rmimvc.observer.ObservableRemoto;
 
-public class Zombie implements IObservable {
+public class Zombie extends ObservableRemoto implements IObservable {
 	private LinkedList<Jugador> misJugadores = new LinkedList<Jugador>();
 	private Mazo mazo;
 	private ArrayList<IObservador> observadores;
+	
 
 	//constante
 	private static Integer MAXIMO_JUGADORES = 4;
@@ -29,6 +31,11 @@ public class Zombie implements IObservable {
 	}
 
 	// ----------------------------------------------------------
+	
+	public String iniciar() {
+		return("iniciar zombie");
+	}
+	
 	// Validar Jugador
 	public Boolean validarNombreJugador(String nombre) {
 		Boolean valido = true;

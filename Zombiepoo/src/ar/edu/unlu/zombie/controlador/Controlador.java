@@ -1,19 +1,24 @@
 package ar.edu.unlu.zombie.controlador;
 
-import ar.edu.unlu.zombie.modelo.Zombie;
+import ar.edu.unlu.zombie.interfaces.IModelo;
+import ar.edu.unlu.zombie.interfaces.IVista;
 import ar.edu.unlu.zombie.modelo.enumerados.Evento;
 import ar.edu.unlu.zombie.observador.IObservable;
 import ar.edu.unlu.zombie.observador.IObservador;
-import ar.edu.unlu.zombie.vista.VistaConsola;
 
 public class Controlador implements IObservador {
-	private VistaConsola vista;
-	private Zombie modelo;
+	private IModelo modelo;
+	private IVista vista;
 	
-	public Controlador (VistaConsola vista, Zombie modelo) {
-		this.vista = vista;
+	public Controlador (
+			IModelo modelo, 
+			IVista vista) {
 		this.modelo = modelo;
-		
+		this.vista = vista;
+	}
+	
+	public void iniciarVista() {
+		vista.menuDeInicio();
 	}
 
 	@Override

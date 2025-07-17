@@ -1,4 +1,5 @@
 package ar.edu.unlu.zombie.modelo;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 
