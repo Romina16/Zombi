@@ -1,5 +1,7 @@
 package ar.edu.unlu.zombie.interfaces;
 
-public interface IModelo {
+import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
+
+public interface IModelo extends IObservableRemoto {
 
 }

@@ -1,12 +1,14 @@
 package ar.edu.unlu.zombie.modelo.entidades;
 import java.util.Collections;
+import java.io.Serializable;
 import java.util.ArrayList;
-//import java.util.List;
 import java.util.Stack;
 import java.util.LinkedList;
 import ar.edu.unlu.zombie.modelo.enumerados.Tipo;
 
-public class Mazo {
+public class Mazo implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private Stack<Carta> mazo = new Stack<Carta>();
 	
 	public Mazo() {
@@ -14,8 +16,6 @@ public class Mazo {
 		mezclar();
 	}
 	
-//-------------------------------------------------
-//carga de mazo
 	public void inicializar() { 
 		for (int i= 1; i < 12; i++) { //for de numeros de carta
 			Tipo[] valores = Tipo.values();//pongo valores de enum tipo en array

@@ -1,6 +1,8 @@
 package ar.edu.unlu.zombie.modelo.enumerados;
 
-public enum Evento {
+import java.io.Serializable;
+
+public enum Evento implements Serializable {
 	AGREGAR_JUGADOR,//Agrega jugadores
 	ERROR_NOMBRE_JUGADOR,//Error nombre del jugador, ya est
 	LIMITE_MAX_JUGADORES,//Limite max de jugadores

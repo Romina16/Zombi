@@ -1,29 +1,36 @@
 package ar.edu.unlu.zombie.controlador;
 
+import java.rmi.RemoteException;
+
+import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
+import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
+import ar.edu.unlu.zombie.interfaces.IControlador;
 import ar.edu.unlu.zombie.interfaces.IModelo;
 import ar.edu.unlu.zombie.interfaces.IVista;
 import ar.edu.unlu.zombie.modelo.enumerados.Evento;
-import ar.edu.unlu.zombie.observador.IObservable;
-import ar.edu.unlu.zombie.observador.IObservador;
 
-public class Controlador implements IObservador {
+public class Controlador implements IControladorRemoto, IControlador {
 	private IModelo modelo;
 	private IVista vista;
 	
-	public Controlador (
-			IModelo modelo, 
-			IVista vista) {
-		this.modelo = modelo;
+	public Controlador () {
+	}
+	
+	public void setVista(IVista vista) {
 		this.vista = vista;
 	}
 	
-	public void iniciarVista() {
-		vista.menuDeInicio();
+	public void iniciarMenuPrincipal() {
+		vista.iniciarMenuPrincipal();
 	}
 
 	@Override
-	public void actualizar(Object evento, IObservable observado) {
-		// TODO Auto-generated method stub
+	public <T extends IObservableRemoto> void setModeloRemoto(T arg0) throws RemoteException {
+		this.modelo = (IModelo) modelo;
+	}
+
+	@Override
+	public void actualizar(IObservableRemoto arg0, Object evento) throws RemoteException {
 		if (evento instanceof Evento) {
 			switch((Evento)evento) {
 			case AGREGAR_JUGADOR:
@@ -31,7 +38,7 @@ public class Controlador implements IObservador {
 			case DESCARTE_INICIAL_TERMINADO:
 				
 			}
-		}
+		}	
 	}
 	
 }

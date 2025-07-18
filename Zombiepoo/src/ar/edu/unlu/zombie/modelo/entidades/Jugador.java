@@ -3,9 +3,12 @@ package ar.edu.unlu.zombie.modelo.entidades;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Jugador {
+public class Jugador implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private String nombre;
 	private LinkedList<Carta> mano;
 	private Boolean esGanador;
@@ -14,8 +17,7 @@ public class Jugador {
 		this.nombre = nombre;
 		this.setEsGanador(false);
 	}
-//Getters y Setters
-//----------------------------------------------------------------	
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -32,9 +34,6 @@ public class Jugador {
 		this.esGanador = esGanador;
 	}
 
-//----------------------------------------------------------------	
-//	Metodos
-// devolver cartas en string
 	public String manoString() {
 		ArrayList<String> cartas = new ArrayList<>();
 		for (Carta carta : this.mano) {
