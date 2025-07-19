@@ -7,7 +7,6 @@ import javax.swing.JOptionPane;
 import ar.edu.unlu.rmimvc.RMIMVCException;
 import ar.edu.unlu.rmimvc.cliente.Cliente;
 import ar.edu.unlu.zombie.controlador.Controlador;
-import ar.edu.unlu.zombie.interfaces.IControlador;
 import ar.edu.unlu.zombie.interfaces.IVista;
 import ar.edu.unlu.zombie.vista.administradores.AdministradorVistaUI;
 
@@ -56,7 +55,7 @@ public class AppCliente {
             return;
         }
 
-        vista.iniciarMenuPrincipal();
+        vista.mostrarPanelMenuPrincipal();
     }
 
 }

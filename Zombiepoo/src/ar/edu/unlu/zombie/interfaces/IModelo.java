@@ -1,7 +1,10 @@
 package ar.edu.unlu.zombie.interfaces;
 
-import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 
-public interface IModelo extends IObservableRemoto {
+import ar.edu.unlu.zombie.modelo.enumerados.EventoJugador;
 
+public interface IModelo extends Remote {
+	EventoJugador agregarNuevoJugador(String nombreNuevoJugador) throws RemoteException;
 }

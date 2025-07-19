@@ -4,8 +4,7 @@ import java.rmi.RemoteException;
 
 import ar.edu.unlu.rmimvc.RMIMVCException;
 import ar.edu.unlu.rmimvc.servidor.*;
-import ar.edu.unlu.zombie.modelo.Zombie;
-import ar.edu.unlu.zombie.interfaces.IModelo;
+import ar.edu.unlu.zombie.modelo.Modelo;
 
 public class AppServidor {
 	
@@ -14,11 +13,11 @@ public class AppServidor {
 
 	public static void main(String[] args) {
 		
-		IModelo zombie = new Zombie();
+		Modelo modelo = new Modelo();
 		Servidor servidor = new Servidor(IP_SERVIDOR, PUERTO_SERVIDOR);
 		
 		try {
-			servidor.iniciar(zombie);
+			servidor.iniciar(modelo);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		} catch (RMIMVCException e) {

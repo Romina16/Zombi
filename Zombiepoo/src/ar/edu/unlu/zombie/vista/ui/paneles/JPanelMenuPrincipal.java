@@ -27,12 +27,12 @@ public class JPanelMenuPrincipal extends JPanel {
 		JButton btnNewButton = new JButton("Cargar Jugador");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				administradorVista.iniciarCargaJugadores();
+				administradorVista.mostrarPanelCargaJugador();
 			}
 		});
 		btnNewButton.setBounds(167, 107, 103, 21);
 		add(btnNewButton);
-
+		
 	}
 
 }

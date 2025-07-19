@@ -10,60 +10,58 @@ import ar.edu.unlu.zombie.interfaces.IObservador;
 import ar.edu.unlu.zombie.modelo.entidades.Carta;
 import ar.edu.unlu.zombie.modelo.entidades.Jugador;
 import ar.edu.unlu.zombie.modelo.entidades.Mazo;
-import ar.edu.unlu.zombie.modelo.enumerados.Evento;
+import ar.edu.unlu.zombie.modelo.enumerados.EventoGeneral;
+import ar.edu.unlu.zombie.modelo.enumerados.EventoJugador;
 import ar.edu.unlu.rmimvc.observer.ObservableRemoto;
 
-public class Zombie extends ObservableRemoto implements IModelo, Serializable {
+public class Modelo extends ObservableRemoto implements IModelo, Serializable {
 	
 	private static final long serialVersionUID = 1L;
+	private static final Integer MAXIMO_JUGADORES = 4;
 
 	private ArrayList<IObservador> observadores;
 	
 	private LinkedList<Jugador> misJugadores = new LinkedList<Jugador>();
 	private Mazo mazo;
 	
-	private static final Integer MAXIMO_JUGADORES = 4;
-	
-	// constructor
-	public Zombie() {
+	public Modelo() {
 		// turnosJugadores = new LinkedList<Jugador>();
 		misJugadores = new LinkedList<Jugador>();
 		mazo = new Mazo();
 		observadores = new ArrayList<IObservador>();
 	}
 
-	// ----------------------------------------------------------
-	
-	public String iniciar() {
-		return("iniciar zombie");
-	}
-	
-	// Validar Jugador
-	public Boolean validarNombreJugador(String nombre) {
-		Boolean valido = true;
-		if (!this.misJugadores.isEmpty()) {
-			for (Jugador jugadores : misJugadores) {
-				if (jugadores.getNombre().equals(nombre)) {
-					valido = false;
-				}
-			}
-		}
-		return valido;
+	private boolean validarNombreJugador(String nombreNuevoJugador) {
+	    if (nombreNuevoJugador == null || nombreNuevoJugador.isBlank()) {
+	        return false;
+	    }
+
+	    return misJugadores
+	        .stream()
+	        .map(jugador -> jugador.getNombre().trim().toLowerCase())
+	        .noneMatch(nombre -> nombre.equals(nombreNuevoJugador));
 	}
 
-	// Agregar jugadores
-	public void agregarJugador(String nombre) throws RemoteException {
-		if (Zombie.MAXIMO_JUGADORES > this.misJugadores.size()) { 
-			if (this.validarNombreJugador(nombre)) { // si el nombre del jugador es valido
-				misJugadores.add(new Jugador(nombre)); //AGREGO JUGADOR
-				notificarObservadores(Evento.AGREGAR_JUGADOR);// indica que se agrego un jugador
-			} else {
-				notificarObservadores(Evento.ERROR_NOMBRE_JUGADOR);// el nombre del jugador ya esta
-			}
-		}else {
-			notificarObservadores(Evento.LIMITE_MAX_JUGADORES);// no se puede exceder el limite de jugadores			
+	@Override
+	public EventoJugador agregarNuevoJugador(String nombreNuevoJugador) throws RemoteException {
+		if (this.misJugadores.size() == Modelo.MAXIMO_JUGADORES) { 
+			return EventoJugador.ERROR_LIMITE_MAXIMO_JUGADORES;	
 		}
+		
+		if (!this.validarNombreJugador(nombreNuevoJugador)) { 
+			return EventoJugador.ERROR_VALIDACION_NOMBRE_JUGADOR;
+		}
+		
+		misJugadores.add(new Jugador(nombreNuevoJugador)); 
+		
+		if(this.misJugadores.size() == Modelo.MAXIMO_JUGADORES) {
+			notificarObservadores(EventoGeneral.MOSTRAR_PANTALLA_INICIAR_RONDA);
+			return null;
+		}
+		
+		return EventoJugador.MOSTRAR_PANTALLA_ESPERA_JUGADORES;	
 	}
+	
 	//Validar que hayan al menos 2 jugadores
 	public boolean validarCantidadJugadores() {
 		return (this.misJugadores.size() >= 2);
@@ -101,7 +99,7 @@ public class Zombie extends ObservableRemoto implements IModelo, Serializable {
 			//this.notificar(Evento.DESCARTE_INICIAL_TERMINADO);
 			this.desarrolloDeTurnos();
 		}else { // no hay jugadores suficientes
-			notificarObservadores(Evento.LIMITE_MIN_JUGADORES);
+			notificarObservadores(EventoGeneral.LIMITE_MIN_JUGADORES);
 		}
 	}
 

@@ -1,0 +1,8 @@
+package ar.edu.unlu.zombie.modelo.enumerados;
+
+public enum EventoJugador {
+	ERROR_LIMITE_MAXIMO_JUGADORES,
+	ERROR_VALIDACION_NOMBRE_JUGADOR,
+	MOSTRAR_PANTALLA_ESPERA_JUGADORES,
+	ERROR_REMOTE_EXCEPTION
+}
