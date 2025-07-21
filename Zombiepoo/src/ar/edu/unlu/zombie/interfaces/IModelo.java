@@ -6,5 +6,7 @@ import java.rmi.RemoteException;
 import ar.edu.unlu.zombie.modelo.enumerados.EventoJugador;
 
 public interface IModelo extends Remote {
+	Boolean isCantidadJugadoresDefinida() throws RemoteException;
+	EventoJugador definirCantidadJugadoresMaximo(Integer cantidadJugadores) throws RemoteException;
 	EventoJugador agregarNuevoJugador(String nombreNuevoJugador) throws RemoteException;
 }

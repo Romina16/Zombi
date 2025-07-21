@@ -3,27 +3,29 @@ package ar.edu.unlu.zombie.modelo.entidades;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Jugador implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
 	private String nombre;
-	private LinkedList<Carta> mano;
+	private Stack<Carta> mazoPersonal;
 	private Boolean esGanador;
 	
 	public Jugador(String nombre) {
 		this.nombre = nombre;
-		this.setEsGanador(false);
+		this.esGanador = false;
 	}
 
 	public String getNombre() {
 		return nombre;
 	}
 
-	public List<Carta> getMano() {
-		return mano;
+	public Stack<Carta> getManoPersonal() {
+		return mazoPersonal;
 	}
 
 	public Boolean getEsGanador() {
@@ -33,66 +35,41 @@ public class Jugador implements Serializable {
 	public void setEsGanador(Boolean esGanador) {
 		this.esGanador = esGanador;
 	}
+	
+	public void agregarCartaAMazoPersonal(Carta carta) {
+		this.mazoPersonal.add(carta);
+	}
 
 	public String manoString() {
 		ArrayList<String> cartas = new ArrayList<>();
-		for (Carta carta : this.mano) {
+		for (Carta carta : this.mazoPersonal) {
 			cartas.add(carta.valorCarta());
 		}
 		return cartas.toString();
 	}
-
-// agarrar carta
-	public void agarrarCarta(Carta carta) {
-		mano.add(carta);
+	
+	public Integer cantidadCartas() {
+		return mazoPersonal.size();
 	}
-
-//recibir lista de cartas inicialmente
-	public void recibirMano(LinkedList<Carta> manoRecibida) {
-		this.mano = new LinkedList<Carta>();
-		this.mano.addAll(manoRecibida);
-	}
-
-//retorna cantidad de cartas en mano
-	public int cantidadCartas() {
-		return mano.size();
-	}
-
-// retornar  mano
-	public List<Carta> retornarMano() {
-		return this.mano;// funcion re
-	}
-
-//tiene cartas aun
-	public boolean tieneCartas() {
-		return !mano.isEmpty();
-	}
-
-// retorna la carta eliminada o null si no pudo eliminar 
+ 
 	public Carta removerCarta(int posicion) {// arranca desde 1 hasta mano.size
-		return posicion > 0 || posicion < mano.size() ? mano.remove(posicion) : null;
+		return posicion > 0 || posicion < mazoPersonal.size() ? mazoPersonal.remove(posicion) : null;
 	}
 
-// elimina carta de la mano
 	public void eliminarCarta(Carta cartaAEliminar) {
-		mano.remove(cartaAEliminar);
-		// return
-
-	}// si elimino la carta la retorno FIJARSE que retorna
-//siguiente carta de la mano
-	// public Integer siguiente
-
-//Descarte inicial
+		mazoPersonal.remove(cartaAEliminar);
+	}
+	
 	public LinkedList<Carta> descarteInicial() {
 		LinkedList<Carta> parejasiniciales = new LinkedList<Carta>();
 		int indiceMano = 0;
 		boolean pareja = false;// controla no seguir recorriendo luego de encontrar una pareja
-		while (indiceMano < mano.size()) {
-			Carta cartaIndice = mano.get(indiceMano);
+		while (indiceMano < mazoPersonal.size()) {
+			Carta cartaIndice = mazoPersonal.get(indiceMano);
 			if (!parejasiniciales.contains(cartaIndice)) {// Controlo que cartaIndice NO ESTE EN parejassIniciales
 				int indiceSiguiente = indiceMano + 1;
-				while (indiceSiguiente < mano.size()) {
-					Carta cartaSiguiente = mano.get(indiceSiguiente);
+				while (indiceSiguiente < mazoPersonal.size()) {
+					Carta cartaSiguiente = mazoPersonal.get(indiceSiguiente);
 					if (cartaIndice.esPareja(cartaSiguiente) && !(pareja)) {
 						pareja = true;
 						parejasiniciales.add(cartaIndice);
@@ -104,7 +81,7 @@ public class Jugador implements Serializable {
 			pareja = false;
 			indiceMano++;
 		}
-		mano.removeAll(parejasiniciales); // borro todas las parejas encontradas
+		mazoPersonal.removeAll(parejasiniciales); // borro todas las parejas encontradas
 		return parejasiniciales;
 	}
 
@@ -118,7 +95,7 @@ public class Jugador implements Serializable {
 		int indiceMano = 0;
 		boolean pareja = false;
 		while (indiceMano <= cantidadCartas() && !(pareja)) {
-			if (mano.get(indiceMano).esPareja(cartaNueva)) {
+			if (mazoPersonal.get(indiceMano).esPareja(cartaNueva)) {
 				pareja = true; // mejorar
 			}
 			indiceMano++;
@@ -137,7 +114,7 @@ public class Jugador implements Serializable {
 
 // mezclar mano luego de recibir carta
 	public void mezclarMano() {
-		Collections.shuffle(mano);
+		Collections.shuffle(mazoPersonal);
 	}
 //en su turno el jugador debe pedir una carta a otro
 	public void pedirCartaOtroJugador() {
@@ -146,8 +123,8 @@ public class Jugador implements Serializable {
 	// si le piden al jugador, entrega su carta
 	public Carta entregarCarta(Integer indice) {
 		Carta cartaEntregar = new Carta();
-		cartaEntregar = this.mano.get(indice);
-		this.mano.remove(cartaEntregar);
+		cartaEntregar = this.mazoPersonal.get(indice);
+		this.mazoPersonal.remove(cartaEntregar);
 		return cartaEntregar;
 	}
 

@@ -17,6 +17,7 @@ public class Controlador implements IControlador, IControladorRemoto {
 	public Controlador () {
 	}
 		
+	@Override
 	public void setVista(IVista vista) {
 		this.vista = vista;
 	}
@@ -26,14 +27,56 @@ public class Controlador implements IControlador, IControladorRemoto {
 	}
 	
 	@Override
-	public void mostrarPanelMenuPrincipal() {
-		vista.mostrarPanelMenuPrincipal();
+	public Boolean isCantidadJugadoresDefinida() {
+		try {
+			return modelo.isCantidadJugadoresDefinida();
+		} catch(RemoteException e) {
+			vista.mostrarMensajeError("Error: Remote Exception");
+			return false;
+		}
 	}
 	
 	@Override
-	public void mostrarPanelEsperaJugadores() {
-		vista.mostrarPanelEsperaJugadores();
+	public void mostrarPanelMenuPrincipal() {
+		vista.mostrarPanelMenuPrincipal();
 	}
+		
+	@Override
+	public void mostrarPanelDefinirCantidadJugadores() {
+		vista.mostrarPanelDefinirCantidadJugadores();
+	}
+
+	@Override
+	public void obtenerDatosCargaCantidadJugadores(String cantidadJugadores) {
+		try {
+			if(cantidadJugadores == null || cantidadJugadores.isBlank()) {
+				vista.mostrarMensajeError("La cantidad de jugadores no puede ser vacia");
+				return;
+			}			
+			
+			Integer cantidadJugadoresInteger = Integer.parseInt(cantidadJugadores.trim());
+						
+			EventoJugador eventoJugador = modelo.definirCantidadJugadoresMaximo(cantidadJugadoresInteger);
+			
+			if(eventoJugador == EventoJugador.ERROR_LIMITE_MINIMO_JUGADORES) {
+				vista.mostrarMensajeError("La cantidad de jugadores debe ser mayor a 2");
+				return;
+			}
+			
+			if(eventoJugador == EventoJugador.ERROR_LIMITE_MAXIMO_JUGADORES) {
+				vista.mostrarMensajeError("La cantidad de jugadores debe ser manor a 4");
+				return;
+			}
+			
+			if(eventoJugador == EventoJugador.MOSTRAR_PANTALLA_CARGA_NOMBRE_JUGADOR) {
+				vista.mostrarPanelCargaJugador();
+			}
+		} catch (NumberFormatException e) {
+			vista.mostrarMensajeError("Numero ingresado invalido");
+		} catch(RemoteException e) {
+			vista.mostrarMensajeError("Error: Remote Exception");
+		}
+	}	
 	
 	@Override
 	public void mostrarPanelCargaJugador() {
@@ -66,7 +109,12 @@ public class Controlador implements IControlador, IControladorRemoto {
 		} catch(RemoteException e) {
 			vista.mostrarMensajeError("Error: Remote Exception");
 		}
-	}	
+	}
+	
+	@Override
+	public void mostrarPanelEsperaJugadores() {
+		vista.mostrarPanelEsperaJugadores();
+	}
 	
 	@Override
 	public void actualizar(IObservableRemoto arg0, Object evento) throws RemoteException {

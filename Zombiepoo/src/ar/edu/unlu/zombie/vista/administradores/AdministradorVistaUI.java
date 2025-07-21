@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 import ar.edu.unlu.zombie.interfaces.IControlador;
 import ar.edu.unlu.zombie.interfaces.IVista;
 import ar.edu.unlu.zombie.vista.ui.JFramePrincipal;
+import ar.edu.unlu.zombie.vista.ui.paneles.JPanelCantidadJugadores;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelCargaJugador;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelEspera;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelInicioRonda;
@@ -16,6 +17,7 @@ public class AdministradorVistaUI implements IVista {
 	private IControlador controlador;
 	private JFramePrincipal framePrincipal;
 	private JPanelMenuPrincipal panelMenuPrincipal;
+	private JPanelCantidadJugadores panelCantidadJugadores;
 	private JPanelEspera panelEspera;
 	private JPanelCargaJugador panelCargaJugador;
 	private JPanelInicioRonda panelInicioRonda;
@@ -24,11 +26,13 @@ public class AdministradorVistaUI implements IVista {
 		this.framePrincipal = new JFramePrincipal();
 		
 		panelMenuPrincipal = new JPanelMenuPrincipal(this);
+		panelCantidadJugadores = new JPanelCantidadJugadores(this);
 		panelEspera = new JPanelEspera(this);
 		panelCargaJugador = new JPanelCargaJugador(this);
 		panelInicioRonda = new JPanelInicioRonda(this);
 		
 		framePrincipal.addPanel("Menu Principal", panelMenuPrincipal);
+		framePrincipal.addPanel("Carga cantidad de jugadores", panelCantidadJugadores);
 		framePrincipal.addPanel("Espera", panelEspera);
 		framePrincipal.addPanel("Carga de Jugador", panelCargaJugador);
 		framePrincipal.addPanel("Inicio de Ronda", panelInicioRonda);
@@ -54,8 +58,23 @@ public class AdministradorVistaUI implements IVista {
 	}	
 	
 	@Override
+	public Boolean isCantidadJugadoresDefinida() {
+		return controlador.isCantidadJugadoresDefinida();
+	}
+	
+	@Override
 	public void mostrarPanelMenuPrincipal() {
 		framePrincipal.showPanel("Menu Principal");
+	}
+	
+	@Override
+	public void mostrarPanelDefinirCantidadJugadores() {
+		framePrincipal.showPanel("Carga cantidad de jugadores");
+	}
+	
+	@Override
+	public void obtenerDatosCargaCantidadJugadores(String cantidadJugadores) {
+		controlador.obtenerDatosCargaCantidadJugadores(cantidadJugadores);
 	}
 	
 	@Override
