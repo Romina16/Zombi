@@ -2,7 +2,9 @@ package ar.edu.unlu.zombie.interfaces;
 
 public interface IControlador {
 	void setVista(IVista vista);
-	Boolean isCantidadJugadoresDefinida();
+	Integer obtenerCantidadMinimaJugadores();
+	Integer obtenerCantidadMaximaJugadores();
+	Boolean esCantidadJugadoresDefinida();
 	void mostrarPanelMenuPrincipal();
 	void mostrarPanelDefinirCantidadJugadores();
 	void obtenerDatosCargaCantidadJugadores(String cantidadJugadores);

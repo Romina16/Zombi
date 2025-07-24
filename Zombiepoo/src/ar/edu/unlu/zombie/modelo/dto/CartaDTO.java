@@ -1,14 +1,14 @@
 package ar.edu.unlu.zombie.modelo.dto;
 
-import ar.edu.unlu.zombie.modelo.enumerados.Tipo;
+import ar.edu.unlu.zombie.modelo.enumerados.TipoCarta;
 //DATA TRANSFER OBJECT
 public class CartaDTO {
-	private Tipo tipo;
+	private TipoCarta tipo;
 	private Integer numero;
 	
 //---------------------------------------------------
 //constructor carta comun
-	public CartaDTO(Tipo tip,int Numero) {
+	public CartaDTO(TipoCarta tip,int Numero) {
 		tipo = tip;
 		numero = Numero;
 	}
@@ -19,7 +19,7 @@ public class CartaDTO {
 	}
 //---------------------------------------------------
 // getters y setters
-	public Tipo getTipo() {
+	public TipoCarta getTipo() {
 		return tipo;
 	}
 	public Integer getNumero() {

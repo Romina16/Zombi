@@ -1,26 +1,29 @@
 package ar.edu.unlu.zombie.modelo.entidades;
 
 import java.io.Serializable;
+import java.util.UUID;
 
-import ar.edu.unlu.zombie.modelo.enumerados.Tipo;
+import ar.edu.unlu.zombie.modelo.enumerados.TipoCarta;
 
 public class Carta implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private Tipo tipo;
+	
+	private UUID id;
+	private TipoCarta tipo;
 	private Integer numero;
 	
-	public Carta(Tipo tip,int Numero) {
-		tipo = tip;
-		numero = Numero;
+	public Carta(TipoCarta tipo, int numero) {
+		this.id = UUID.randomUUID();
+		this.tipo = tipo;
+		this.numero = numero;
+	}
+	
+	public UUID getId() {
+		return this.id;
 	}
 
-	public Carta() {
-		tipo = null;
-		numero = 0;
-	}
-
-	public Tipo getTipo() {
+	public TipoCarta getTipo() {
 		return tipo;
 	}
 	

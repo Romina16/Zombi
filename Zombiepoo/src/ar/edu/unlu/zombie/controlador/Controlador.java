@@ -1,6 +1,7 @@
 package ar.edu.unlu.zombie.controlador;
 
 import java.rmi.RemoteException;
+import java.util.UUID;
 
 import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
 import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
@@ -9,27 +10,54 @@ import ar.edu.unlu.zombie.interfaces.IModelo;
 import ar.edu.unlu.zombie.interfaces.IVista;
 import ar.edu.unlu.zombie.modelo.enumerados.EventoGeneral;
 import ar.edu.unlu.zombie.modelo.enumerados.EventoJugador;
+import ar.edu.unlu.zombie.recursos.Mensaje;
 
 public class Controlador implements IControlador, IControladorRemoto {
+	
 	private IModelo modelo;
 	private IVista vista;
+	private UUID jugadorAsignado;
 	
 	public Controlador () {
 	}
-		
-	@Override
-	public void setVista(IVista vista) {
-		this.vista = vista;
-	}
-	
+
 	public <T extends IObservableRemoto> void setModeloRemoto(T modeloRemoto) throws RemoteException {
 		this.modelo = (IModelo) modeloRemoto;
 	}
 	
 	@Override
-	public Boolean isCantidadJugadoresDefinida() {
+	public void setVista(IVista vista) {
+		this.vista = vista;
+	}
+	
+	public void setJugadorAsignado(UUID idJugador) {
+		this.jugadorAsignado = idJugador;
+	}
+	
+	@Override
+	public Integer obtenerCantidadMinimaJugadores() {
 		try {
-			return modelo.isCantidadJugadoresDefinida();
+			return modelo.obtenerCantidadMinimaJugadores();
+		} catch(RemoteException e) {
+			vista.mostrarMensajeError("Error: Remote Exception");
+			return -1;
+		}
+	}
+	
+	@Override
+	public Integer obtenerCantidadMaximaJugadores() {
+		try {
+			return modelo.obtenerCantidadMaximaJugadores();
+		} catch(RemoteException e) {
+			vista.mostrarMensajeError("Error: Remote Exception");
+			return -1;
+		}
+	}
+	
+	@Override
+	public Boolean esCantidadJugadoresDefinida() {
+		try {
+			return modelo.esCantidadJugadoresDefinida();
 		} catch(RemoteException e) {
 			vista.mostrarMensajeError("Error: Remote Exception");
 			return false;
@@ -56,15 +84,17 @@ public class Controlador implements IControlador, IControladorRemoto {
 			
 			Integer cantidadJugadoresInteger = Integer.parseInt(cantidadJugadores.trim());
 						
-			EventoJugador eventoJugador = modelo.definirCantidadJugadoresMaximo(cantidadJugadoresInteger);
+			Mensaje mensaje = modelo.definirCantidadJugadoresMaximo(cantidadJugadoresInteger);
 			
+			EventoJugador eventoJugador = mensaje.get("EventoJugador", EventoJugador.class);
+			 
 			if(eventoJugador == EventoJugador.ERROR_LIMITE_MINIMO_JUGADORES) {
-				vista.mostrarMensajeError("La cantidad de jugadores debe ser mayor a 2");
+				vista.mostrarMensajeError("La cantidad de jugadores debe ser mayor a " + obtenerCantidadMinimaJugadores());
 				return;
 			}
 			
 			if(eventoJugador == EventoJugador.ERROR_LIMITE_MAXIMO_JUGADORES) {
-				vista.mostrarMensajeError("La cantidad de jugadores debe ser manor a 4");
+				vista.mostrarMensajeError("La cantidad de jugadores debe ser manor a " + obtenerCantidadMaximaJugadores());
 				return;
 			}
 			
@@ -91,7 +121,13 @@ public class Controlador implements IControlador, IControladorRemoto {
 				return;
 			}			
 						
-			EventoJugador eventoJugador = modelo.agregarNuevoJugador(nombreNuevoJugador.trim().toLowerCase());
+			Mensaje mensaje = modelo.agregarNuevoJugador(nombreNuevoJugador.trim().toLowerCase());
+			
+			if(mensaje == null) {
+				return;
+			}
+			
+			EventoJugador eventoJugador = mensaje.get("EventoJugador", EventoJugador.class);
 			
 			if(eventoJugador == EventoJugador.ERROR_LIMITE_MAXIMO_JUGADORES) {
 				vista.mostrarMensajeError("No se pueden ingresar mas jugadores");
@@ -103,7 +139,10 @@ public class Controlador implements IControlador, IControladorRemoto {
 				return;
 			}
 			
+			UUID jugadorId = mensaje.get("id", UUID.class);
 			if(eventoJugador == EventoJugador.MOSTRAR_PANTALLA_ESPERA_JUGADORES) {
+				setJugadorAsignado(jugadorId);
+				System.out.println("Id del jugador: " + this.jugadorAsignado);
 				vista.mostrarPanelEsperaJugadores();
 			}			
 		} catch(RemoteException e) {
@@ -116,12 +155,26 @@ public class Controlador implements IControlador, IControladorRemoto {
 		vista.mostrarPanelEsperaJugadores();
 	}
 	
+	public void mostrarPanelRondaJugador() {
+		try {
+			if(modelo.obtenerJugadorActual().equals(jugadorAsignado)) {
+				vista.mostrarPanelRondaJugadorTurno();
+			} else {
+				vista.mostrarPanelRondaJugadorObservador();
+			}	
+		} catch(RemoteException e) {
+			vista.mostrarMensajeError("Error: Remote Exception");
+		}	
+	}
+	
 	@Override
 	public void actualizar(IObservableRemoto arg0, Object evento) throws RemoteException {
 		if (evento instanceof EventoGeneral) {
 			switch((EventoGeneral) evento) {				
-			case MOSTRAR_PANTALLA_INICIAR_RONDA:
-				vista.mostrarPanelInicioRonda();				
+			case MOSTRAR_PANTALLA_RONDA_JUGADORES:
+				mostrarPanelRondaJugador();
+			default:
+				break;				
 			}
 		}	
 	}

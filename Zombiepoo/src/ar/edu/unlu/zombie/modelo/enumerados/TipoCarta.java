@@ -2,9 +2,10 @@ package ar.edu.unlu.zombie.modelo.enumerados;
 
 import java.io.Serializable;
 
-public enum Tipo implements Serializable {
+public enum TipoCarta implements Serializable {
 	PICA,
 	CORAZON,
 	DIAMANTE,
-	TREBOL;
+	TREBOL,
+	COMODIN
 }

@@ -3,7 +3,7 @@ package ar.edu.unlu.zombie.modelo.entidades;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
+import java.util.UUID;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -11,25 +11,32 @@ public class Jugador implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	private UUID id;
 	private String nombre;
-	private Stack<Carta> mazoPersonal;
+	private List<Carta> mazo;
 	private Boolean esGanador;
 	
 	public Jugador(String nombre) {
+		this.id = UUID.randomUUID();
 		this.nombre = nombre;
+		this.mazo = new ArrayList<Carta>();
 		this.esGanador = false;
+	}
+	
+	public UUID getId() {
+		return this.id;
 	}
 
 	public String getNombre() {
-		return nombre;
+		return this.nombre;
 	}
 
-	public Stack<Carta> getManoPersonal() {
-		return mazoPersonal;
+	public List<Carta> getMazo() {
+		return this.mazo;
 	}
 
 	public Boolean getEsGanador() {
-		return esGanador;
+		return this.esGanador;
 	}
 
 	public void setEsGanador(Boolean esGanador) {
@@ -37,39 +44,43 @@ public class Jugador implements Serializable {
 	}
 	
 	public void agregarCartaAMazoPersonal(Carta carta) {
-		this.mazoPersonal.add(carta);
+		this.mazo.add(carta);
+	}
+	
+	public Carta quitarCarta(int posicion) {
+		return mazo.remove(posicion);
 	}
 
 	public String manoString() {
 		ArrayList<String> cartas = new ArrayList<>();
-		for (Carta carta : this.mazoPersonal) {
+		for (Carta carta : this.mazo) {
 			cartas.add(carta.valorCarta());
 		}
 		return cartas.toString();
 	}
 	
 	public Integer cantidadCartas() {
-		return mazoPersonal.size();
+		return mazo.size();
 	}
  
 	public Carta removerCarta(int posicion) {// arranca desde 1 hasta mano.size
-		return posicion > 0 || posicion < mazoPersonal.size() ? mazoPersonal.remove(posicion) : null;
+		return posicion > 0 || posicion < mazo.size() ? mazo.remove(posicion) : null;
 	}
 
 	public void eliminarCarta(Carta cartaAEliminar) {
-		mazoPersonal.remove(cartaAEliminar);
+		mazo.remove(cartaAEliminar);
 	}
 	
 	public LinkedList<Carta> descarteInicial() {
 		LinkedList<Carta> parejasiniciales = new LinkedList<Carta>();
 		int indiceMano = 0;
 		boolean pareja = false;// controla no seguir recorriendo luego de encontrar una pareja
-		while (indiceMano < mazoPersonal.size()) {
-			Carta cartaIndice = mazoPersonal.get(indiceMano);
+		while (indiceMano < mazo.size()) {
+			Carta cartaIndice = mazo.get(indiceMano);
 			if (!parejasiniciales.contains(cartaIndice)) {// Controlo que cartaIndice NO ESTE EN parejassIniciales
 				int indiceSiguiente = indiceMano + 1;
-				while (indiceSiguiente < mazoPersonal.size()) {
-					Carta cartaSiguiente = mazoPersonal.get(indiceSiguiente);
+				while (indiceSiguiente < mazo.size()) {
+					Carta cartaSiguiente = mazo.get(indiceSiguiente);
 					if (cartaIndice.esPareja(cartaSiguiente) && !(pareja)) {
 						pareja = true;
 						parejasiniciales.add(cartaIndice);
@@ -81,7 +92,7 @@ public class Jugador implements Serializable {
 			pareja = false;
 			indiceMano++;
 		}
-		mazoPersonal.removeAll(parejasiniciales); // borro todas las parejas encontradas
+		mazo.removeAll(parejasiniciales); // borro todas las parejas encontradas
 		return parejasiniciales;
 	}
 
@@ -95,7 +106,7 @@ public class Jugador implements Serializable {
 		int indiceMano = 0;
 		boolean pareja = false;
 		while (indiceMano <= cantidadCartas() && !(pareja)) {
-			if (mazoPersonal.get(indiceMano).esPareja(cartaNueva)) {
+			if (mazo.get(indiceMano).esPareja(cartaNueva)) {
 				pareja = true; // mejorar
 			}
 			indiceMano++;
@@ -114,18 +125,11 @@ public class Jugador implements Serializable {
 
 // mezclar mano luego de recibir carta
 	public void mezclarMano() {
-		Collections.shuffle(mazoPersonal);
+		Collections.shuffle(mazo);
 	}
 //en su turno el jugador debe pedir una carta a otro
 	public void pedirCartaOtroJugador() {
 
-	}
-	// si le piden al jugador, entrega su carta
-	public Carta entregarCarta(Integer indice) {
-		Carta cartaEntregar = new Carta();
-		cartaEntregar = this.mazoPersonal.get(indice);
-		this.mazoPersonal.remove(cartaEntregar);
-		return cartaEntregar;
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////

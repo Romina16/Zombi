@@ -1,14 +1,18 @@
 package ar.edu.unlu.zombie.modelo.entidades;
 
 import java.util.Collections;
+import java.util.EnumSet;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Stack;
-import ar.edu.unlu.zombie.modelo.enumerados.Tipo;
+import ar.edu.unlu.zombie.modelo.enumerados.TipoCarta;
 
 public class Mazo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final int VALOR_MIN = 1;
+    private static final int VALOR_MAX = 12;
 	private Stack<Carta> mazo = new Stack<Carta>();
 	
 	public Mazo() {
@@ -16,18 +20,15 @@ public class Mazo implements Serializable {
 		mezclarMazo();
 	}
 	
-	public void setearMazo() { 
-		for (int i= 1; i < 12; i++) { //for de numeros de carta
-			Tipo[] valores = Tipo.values();//pongo valores de enum tipo en array
-			for (Tipo tipoDeCarta: valores) { // for de tipo
-				Carta cartaMazo = new Carta(tipoDeCarta,i); 
-				mazo.add(cartaMazo); //agrego al mazo todos los tipos de un n
-			}
-		}
-		Carta comodin = new Carta(); // comodin no tiene valor ni numero
-		mazo.add(comodin); // carta nro 49
-		// patron de unica instancia  
-	} 
+	public void setearMazo() {
+        for (TipoCarta palo : EnumSet.complementOf(EnumSet.of(TipoCarta.COMODIN))) {
+            for (int valor = VALOR_MIN; valor <= VALOR_MAX; valor++) {
+                mazo.add(new Carta(palo, valor));
+            }
+        }
+        
+        mazo.add(new Carta(TipoCarta.COMODIN, 0));
+    }
 		
 	public void mezclarMazo() {
 		Collections.shuffle(this.mazo); 

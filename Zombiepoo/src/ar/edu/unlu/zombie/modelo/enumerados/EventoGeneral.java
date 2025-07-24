@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public enum EventoGeneral implements Serializable {
 	
-	MOSTRAR_PANTALLA_INICIAR_RONDA,
+	MOSTRAR_PANTALLA_RONDA_JUGADORES,
 		
 	AGREGAR_JUGADOR,//Agrega jugadores
 	ERROR_NOMBRE_JUGADOR,//Error nombre del jugador, ya est

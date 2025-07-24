@@ -27,7 +27,7 @@ public class JPanelMenuPrincipal extends JPanel {
 		JButton btnNewButton = new JButton("Cargar Jugador");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(!administradorVista.isCantidadJugadoresDefinida()) {
+				if(!administradorVista.esCantidadJugadoresDefinida()) {
 					administradorVista.mostrarPanelDefinirCantidadJugadores();
 				} else {
 					administradorVista.mostrarPanelCargaJugador();

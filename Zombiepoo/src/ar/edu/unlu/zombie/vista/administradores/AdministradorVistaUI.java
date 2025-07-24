@@ -9,8 +9,9 @@ import ar.edu.unlu.zombie.vista.ui.JFramePrincipal;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelCantidadJugadores;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelCargaJugador;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelEspera;
-import ar.edu.unlu.zombie.vista.ui.paneles.JPanelInicioRonda;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelMenuPrincipal;
+import ar.edu.unlu.zombie.vista.ui.paneles.JPanelRondaJugadorObservador;
+import ar.edu.unlu.zombie.vista.ui.paneles.JPanelRondaJugadorTurno;
 
 public class AdministradorVistaUI implements IVista {
 	
@@ -20,7 +21,8 @@ public class AdministradorVistaUI implements IVista {
 	private JPanelCantidadJugadores panelCantidadJugadores;
 	private JPanelEspera panelEspera;
 	private JPanelCargaJugador panelCargaJugador;
-	private JPanelInicioRonda panelInicioRonda;
+	private JPanelRondaJugadorTurno panelRondaJugadorTurno;
+	private JPanelRondaJugadorObservador panelRondaJugadorObservador;
 	
 	public AdministradorVistaUI() {
 		this.framePrincipal = new JFramePrincipal();
@@ -29,13 +31,15 @@ public class AdministradorVistaUI implements IVista {
 		panelCantidadJugadores = new JPanelCantidadJugadores(this);
 		panelEspera = new JPanelEspera(this);
 		panelCargaJugador = new JPanelCargaJugador(this);
-		panelInicioRonda = new JPanelInicioRonda(this);
+		panelRondaJugadorTurno = new JPanelRondaJugadorTurno(this);
+		panelRondaJugadorObservador = new JPanelRondaJugadorObservador(this);		
 		
 		framePrincipal.addPanel("Menu Principal", panelMenuPrincipal);
 		framePrincipal.addPanel("Carga cantidad de jugadores", panelCantidadJugadores);
 		framePrincipal.addPanel("Espera", panelEspera);
 		framePrincipal.addPanel("Carga de Jugador", panelCargaJugador);
-		framePrincipal.addPanel("Inicio de Ronda", panelInicioRonda);
+		framePrincipal.addPanel("Jugador Turno", panelRondaJugadorTurno);
+		framePrincipal.addPanel("Jugador Observador", panelRondaJugadorObservador);
 		
 		showFrame();
 	}
@@ -58,8 +62,18 @@ public class AdministradorVistaUI implements IVista {
 	}	
 	
 	@Override
-	public Boolean isCantidadJugadoresDefinida() {
-		return controlador.isCantidadJugadoresDefinida();
+	public Integer obtenerCantidadMinimaJugadores() {
+		return controlador.obtenerCantidadMinimaJugadores();
+	}
+	
+	@Override
+	public Integer obtenerCantidadMaximaJugadores() {
+		return controlador.obtenerCantidadMaximaJugadores();
+	}
+	
+	@Override
+	public Boolean esCantidadJugadoresDefinida() {
+		return controlador.esCantidadJugadoresDefinida();
 	}
 	
 	@Override
@@ -93,8 +107,13 @@ public class AdministradorVistaUI implements IVista {
 	}
 	
 	@Override
-	public void mostrarPanelInicioRonda() {
-		framePrincipal.showPanel("Inicio de Ronda");
+	public void mostrarPanelRondaJugadorTurno() {
+		framePrincipal.showPanel("Jugador Turno");
+	}
+	
+	@Override
+	public void mostrarPanelRondaJugadorObservador() {
+		framePrincipal.showPanel("Jugador Observador");
 	}
 	
 	@Override
