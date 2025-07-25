@@ -36,7 +36,7 @@ public class Carta implements Serializable {
 	}
 
 	public boolean EsComodin() {
-		return (this.numero == 0);
+		return (this.tipo == TipoCarta.COMODIN);
 	}
 	
 	public boolean esPareja(Carta otraCarta) {

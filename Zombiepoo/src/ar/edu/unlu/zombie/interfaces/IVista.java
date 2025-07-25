@@ -4,8 +4,8 @@ public interface IVista {
 	void setControlador(IControlador controlador);
 	Integer obtenerCantidadMinimaJugadores();
 	Integer obtenerCantidadMaximaJugadores();
-	Boolean esCantidadJugadoresDefinida();
 	void mostrarPanelMenuPrincipal();
+	void mostrarPanelIniciarJuego();
 	void mostrarPanelDefinirCantidadJugadores();
 	void obtenerDatosCargaCantidadJugadores(String cantidadJugadores);
 	void mostrarPanelEsperaJugadores();
@@ -13,6 +13,7 @@ public interface IVista {
 	void obtenerDatosCargaJugador(String nombreJugador);
 	void mostrarPanelRondaJugadorTurno();
 	void mostrarPanelRondaJugadorObservador();
+	void salirJuego();
 	void mostrarMensajeExito(String mensaje);
 	void mostrarMensajeError(String mensaje);
 }

@@ -4,8 +4,8 @@ public interface IControlador {
 	void setVista(IVista vista);
 	Integer obtenerCantidadMinimaJugadores();
 	Integer obtenerCantidadMaximaJugadores();
-	Boolean esCantidadJugadoresDefinida();
 	void mostrarPanelMenuPrincipal();
+	void mostrarPanelIniciarJuego();
 	void mostrarPanelDefinirCantidadJugadores();
 	void obtenerDatosCargaCantidadJugadores(String cantidadJugadores);
 	void mostrarPanelEsperaJugadores();

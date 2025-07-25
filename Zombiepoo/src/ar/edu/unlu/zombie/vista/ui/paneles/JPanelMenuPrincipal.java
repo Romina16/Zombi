@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
 
 public class JPanelMenuPrincipal extends JPanel {
 
@@ -18,6 +19,7 @@ public class JPanelMenuPrincipal extends JPanel {
 		
 		this.administradorVista = administradorVista;
 		
+		setSize(900, 500);
 		setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Menu de inicio");
@@ -27,15 +29,16 @@ public class JPanelMenuPrincipal extends JPanel {
 		JButton btnNewButton = new JButton("Cargar Jugador");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(!administradorVista.esCantidadJugadoresDefinida()) {
-					administradorVista.mostrarPanelDefinirCantidadJugadores();
-				} else {
-					administradorVista.mostrarPanelCargaJugador();
-				}
+				administradorVista.mostrarPanelIniciarJuego();
 			}
 		});
 		btnNewButton.setBounds(167, 107, 103, 21);
 		add(btnNewButton);
+		
+		JLabel lblNewLabel_1 = new JLabel("New label");
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_1.setBounds(0, 0, 900, 500);
+		add(lblNewLabel_1);
 		
 	}
 

@@ -70,15 +70,15 @@ public class AdministradorVistaUI implements IVista {
 	public Integer obtenerCantidadMaximaJugadores() {
 		return controlador.obtenerCantidadMaximaJugadores();
 	}
-	
-	@Override
-	public Boolean esCantidadJugadoresDefinida() {
-		return controlador.esCantidadJugadoresDefinida();
-	}
-	
+		
 	@Override
 	public void mostrarPanelMenuPrincipal() {
 		framePrincipal.showPanel("Menu Principal");
+	}
+	
+	@Override
+	public void mostrarPanelIniciarJuego() {
+		controlador.mostrarPanelIniciarJuego();
 	}
 	
 	@Override
@@ -114,6 +114,11 @@ public class AdministradorVistaUI implements IVista {
 	@Override
 	public void mostrarPanelRondaJugadorObservador() {
 		framePrincipal.showPanel("Jugador Observador");
+	}
+	
+	@Override
+	public void salirJuego() {
+		System.exit(0);
 	}
 	
 	@Override

@@ -55,18 +55,23 @@ public class Controlador implements IControlador, IControladorRemoto {
 	}
 	
 	@Override
-	public Boolean esCantidadJugadoresDefinida() {
-		try {
-			return modelo.esCantidadJugadoresDefinida();
-		} catch(RemoteException e) {
-			vista.mostrarMensajeError("Error: Remote Exception");
-			return false;
-		}
+	public void mostrarPanelMenuPrincipal() {
+		vista.mostrarPanelMenuPrincipal();
 	}
 	
 	@Override
-	public void mostrarPanelMenuPrincipal() {
-		vista.mostrarPanelMenuPrincipal();
+	public void mostrarPanelIniciarJuego() {
+		try {
+			
+			if(!modelo.esCantidadJugadoresDefinida()) {
+				vista.mostrarPanelDefinirCantidadJugadores();
+			} else {
+				vista.mostrarPanelCargaJugador();
+			}
+			
+		} catch (RemoteException e) {
+			vista.mostrarMensajeError("Error: Remote Exception");
+		}
 	}
 		
 	@Override
@@ -77,6 +82,7 @@ public class Controlador implements IControlador, IControladorRemoto {
 	@Override
 	public void obtenerDatosCargaCantidadJugadores(String cantidadJugadores) {
 		try {
+			
 			if(cantidadJugadores == null || cantidadJugadores.isBlank()) {
 				vista.mostrarMensajeError("La cantidad de jugadores no puede ser vacia");
 				return;
@@ -101,6 +107,7 @@ public class Controlador implements IControlador, IControladorRemoto {
 			if(eventoJugador == EventoJugador.MOSTRAR_PANTALLA_CARGA_NOMBRE_JUGADOR) {
 				vista.mostrarPanelCargaJugador();
 			}
+			
 		} catch (NumberFormatException e) {
 			vista.mostrarMensajeError("Numero ingresado invalido");
 		} catch(RemoteException e) {
@@ -116,17 +123,14 @@ public class Controlador implements IControlador, IControladorRemoto {
 	@Override
 	public void obtenerDatosCargaJugador(String nombreNuevoJugador) {
 		try {
+			
 			if(nombreNuevoJugador == null || nombreNuevoJugador.isBlank()) {
 				vista.mostrarMensajeError("El nombre no puede estar vacio");
 				return;
 			}			
 						
 			Mensaje mensaje = modelo.agregarNuevoJugador(nombreNuevoJugador.trim().toLowerCase());
-			
-			if(mensaje == null) {
-				return;
-			}
-			
+						
 			EventoJugador eventoJugador = mensaje.get("EventoJugador", EventoJugador.class);
 			
 			if(eventoJugador == EventoJugador.ERROR_LIMITE_MAXIMO_JUGADORES) {
@@ -139,12 +143,18 @@ public class Controlador implements IControlador, IControladorRemoto {
 				return;
 			}
 			
-			UUID jugadorId = mensaje.get("id", UUID.class);
-			if(eventoJugador == EventoJugador.MOSTRAR_PANTALLA_ESPERA_JUGADORES) {
+			if(eventoJugador == EventoJugador.EVENTO_GLOBAL) {
+				UUID jugadorId = mensaje.get("id", UUID.class);
 				setJugadorAsignado(jugadorId);
-				System.out.println("Id del jugador: " + this.jugadorAsignado);
+			}
+			
+			if(eventoJugador == EventoJugador.MOSTRAR_PANTALLA_ESPERA_JUGADORES) {
+				UUID jugadorId = mensaje.get("id", UUID.class);
+				setJugadorAsignado(jugadorId);
 				vista.mostrarPanelEsperaJugadores();
-			}			
+				return;
+			}	
+			
 		} catch(RemoteException e) {
 			vista.mostrarMensajeError("Error: Remote Exception");
 		}
@@ -157,11 +167,13 @@ public class Controlador implements IControlador, IControladorRemoto {
 	
 	public void mostrarPanelRondaJugador() {
 		try {
-			if(modelo.obtenerJugadorActual().equals(jugadorAsignado)) {
+			
+			if(modelo.obtenerJugadorActualId().equals(jugadorAsignado)) {
 				vista.mostrarPanelRondaJugadorTurno();
 			} else {
 				vista.mostrarPanelRondaJugadorObservador();
 			}	
+			
 		} catch(RemoteException e) {
 			vista.mostrarMensajeError("Error: Remote Exception");
 		}	

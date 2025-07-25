@@ -47,8 +47,16 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
 	}
 	
 	@Override
-	public UUID obtenerJugadorActual() throws RemoteException {
+	public UUID obtenerJugadorActualId() throws RemoteException {
 		return jugadores.get(posicionJugadorActual).getId();
+	}
+	
+	private Jugador obtenerJugadorActual() {
+		return jugadores.get(posicionJugadorActual);
+	}
+	
+	private Jugador obtenerJugadorDerecha() {
+		return jugadores.get(posicionJugadorActual);
 	}
 	
 	@Override
@@ -97,14 +105,14 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
                 if (this.mazo.esVacio()) {
                     break;
                 } 
-                jugador.agregarCartaAMazoPersonal(mazo.getCartaTope());        
+                jugador.agregarCartaAMazo(mazo.getCartaTope());        
             }
         }
     }
  	
 	private void descarte() {
 		for(Jugador jugador: jugadores) {
-			jugador.descarteInicial();
+			jugador.descartar();
 		}
 	}
 
@@ -135,6 +143,7 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
 			return new Mensaje
 					.Builder()
 				    .put("EventoJugador", EventoJugador.EVENTO_GLOBAL)
+				    .put("id", jugador.getId())
 				    .build();
 		}
 				
@@ -152,45 +161,21 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
     private Integer siguientePosicion(Integer posicionActual) {
         return (posicionActual + 1) % cantidadJugadoresActuales;
     }
-	
-    private Integer posicionJugadorDerecha(Integer posicionActual) {
-        return (posicionActual - 1) % cantidadJugadoresActuales;
-    }
-    
+	    
 	public EventoJugador tomarCartaJugadorDerecha(Carta cartaJugadorDerecha) {
+	
+		obtenerJugadorDerecha().quitarCarta(cartaJugadorDerecha);
 		
-		// agregar carta a jugador
-		//jugadores.get(0).quitarCarta();
-		//jugadores.get(posicionJugadorActual).agregarCartaAMazoPersonal(cartaJugadorDerecha);
-		// descartar nuevamente
-		// Siguiente posicion
+		obtenerJugadorActual().agregarCartaAMazo(cartaJugadorDerecha);
+		obtenerJugadorActual().descartar();
+		
+		this.posicionJugadorActual = siguientePosicion(posicionJugadorActual);
+		
+		if(obtenerJugadorActual().getMazo().isEmpty()) {
+			//
+		}
 		
 		return EventoJugador.ERROR_LIMITE_MAXIMO_JUGADORES;
-	}
-
-	// Inicio - manejo de turnos
-	public void desarrolloDeTurnos() {
-		// Se inician los turnos
-		Boolean juegoEnCurso = true;
-		while (juegoEnCurso) {
-			//desarrollo turnos
-			
-			//paso el prox jugador
-		}
-		// desarrollo de los turnos
-		// fin de juego es detectado
-	}
-	
-	public void turno(Jugador jugador) {
-		//jugador pide
-		
-		//Carta cartaRecibida = 
-			//	if (c)
-		//verificacion de cartas
-		//switch() {
-		//case:
-		//}
-		
 	}
 
 }

@@ -1,9 +1,13 @@
 package ar.edu.unlu.zombie.modelo.entidades;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
+
+import ar.edu.unlu.zombie.modelo.enumerados.TipoCarta;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -43,12 +47,16 @@ public class Jugador implements Serializable {
 		this.esGanador = esGanador;
 	}
 	
-	public void agregarCartaAMazoPersonal(Carta carta) {
+	public void agregarCartaAMazo(Carta carta) {
 		this.mazo.add(carta);
 	}
 	
 	public Carta quitarCarta(int posicion) {
 		return mazo.remove(posicion);
+	}
+	
+	public void quitarCarta(Carta carta) {
+		mazo.remove(carta);
 	}
 
 	public String manoString() {
@@ -62,86 +70,52 @@ public class Jugador implements Serializable {
 	public Integer cantidadCartas() {
 		return mazo.size();
 	}
- 
-	public Carta removerCarta(int posicion) {// arranca desde 1 hasta mano.size
-		return posicion > 0 || posicion < mazo.size() ? mazo.remove(posicion) : null;
-	}
-
-	public void eliminarCarta(Carta cartaAEliminar) {
-		mazo.remove(cartaAEliminar);
+	
+	public Boolean esComodin(int posicion) {
+		return mazo.get(posicion).getTipo() == TipoCarta.COMODIN;
+	}	
+	
+	public Boolean esComodin(Carta carta) {
+		return carta.getTipo() == TipoCarta.COMODIN;
+	}	
+	
+	public Boolean soloQuedaComodinEnMazo() {
+		return (this.mazo.size() == 1) && (this.mazo.get(0).EsComodin());
 	}
 	
-	public LinkedList<Carta> descarteInicial() {
-		LinkedList<Carta> parejasiniciales = new LinkedList<Carta>();
-		int indiceMano = 0;
-		boolean pareja = false;// controla no seguir recorriendo luego de encontrar una pareja
-		while (indiceMano < mazo.size()) {
-			Carta cartaIndice = mazo.get(indiceMano);
-			if (!parejasiniciales.contains(cartaIndice)) {// Controlo que cartaIndice NO ESTE EN parejassIniciales
-				int indiceSiguiente = indiceMano + 1;
-				while (indiceSiguiente < mazo.size()) {
-					Carta cartaSiguiente = mazo.get(indiceSiguiente);
-					if (cartaIndice.esPareja(cartaSiguiente) && !(pareja)) {
-						pareja = true;
-						parejasiniciales.add(cartaIndice);
-						parejasiniciales.add(cartaSiguiente);
-					}
-					indiceSiguiente++;
-				}
-			}
-			pareja = false;
-			indiceMano++;
-		}
-		mazo.removeAll(parejasiniciales); // borro todas las parejas encontradas
-		return parejasiniciales;
+	public List<Carta> descartar() {
+
+	    if (mazo.isEmpty()) {
+	        return Collections.emptyList();
+	    }
+
+	    List<Carta> mazoAuxiliar = new ArrayList<>(mazo);
+
+	    mazoAuxiliar.sort(Comparator.comparingInt(Carta::getNumero));
+
+	    List<Carta> parejas = new ArrayList<>();
+
+	    for (int posicion = 0; posicion < mazoAuxiliar.size(); ) {
+	        Carta cartaActual = mazoAuxiliar.get(posicion);
+
+	        if (cartaActual.EsComodin()) {
+	            posicion ++;
+	            continue;
+	        }
+
+	        if((posicion + 1 < mazoAuxiliar.size()) && (cartaActual.getNumero() == mazoAuxiliar.get(posicion + 1).getNumero())) {
+	        	parejas.add(cartaActual);
+	        	parejas.add(mazoAuxiliar.get(posicion + 1));
+	        	posicion =+ 2;
+	            continue;
+	        }
+	        
+	        posicion ++;
+	    }
+	    
+	    mazo.removeAll(parejas);
+
+	    return parejas;
 	}
 
-// Controla si la carta agregada a la mano es comodin
-	public Boolean cartaRecibidaEsComodin(Carta cartaAgregar) {
-		return cartaAgregar.EsComodin();
-	}
-
-//Juntar Pareja y descartar ENCONTRAR PAREJA
-	public boolean encontrarPareja(Carta cartaNueva) {
-		int indiceMano = 0;
-		boolean pareja = false;
-		while (indiceMano <= cantidadCartas() && !(pareja)) {
-			if (mazo.get(indiceMano).esPareja(cartaNueva)) {
-				pareja = true; // mejorar
-			}
-			indiceMano++;
-		}
-		// mano.removeFirstOccurrence(cartaNueva)
-		// return mano.get(indiceMano);
-		return pareja;
-	}
-
-//Descartar Pareja
-	public static void descartarPareja() {
-		// if (){
-		// this.
-		// }
-	}
-
-// mezclar mano luego de recibir carta
-	public void mezclarMano() {
-		Collections.shuffle(mazo);
-	}
-//en su turno el jugador debe pedir una carta a otro
-	public void pedirCartaOtroJugador() {
-
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////////////
-	// gestion del turno
-	// public void turno(){
-	//
-	//
-	// If this.encontrarPareja(cartaTomada){
-	// this.eliminarCarta(cartaeliminar);
-	// }else {
-
-	// }
-
-	// }
 }
