@@ -1,6 +1,8 @@
 package ar.edu.unlu.zombie.controlador;
 
 import java.rmi.RemoteException;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import ar.edu.unlu.rmimvc.cliente.IControladorRemoto;
@@ -8,6 +10,8 @@ import ar.edu.unlu.rmimvc.observer.IObservableRemoto;
 import ar.edu.unlu.zombie.interfaces.IControlador;
 import ar.edu.unlu.zombie.interfaces.IModelo;
 import ar.edu.unlu.zombie.interfaces.IVista;
+import ar.edu.unlu.zombie.modelo.dto.CartaDTO;
+import ar.edu.unlu.zombie.modelo.entidades.Carta;
 import ar.edu.unlu.zombie.modelo.enumerados.EventoGeneral;
 import ar.edu.unlu.zombie.modelo.enumerados.EventoJugador;
 import ar.edu.unlu.zombie.recursos.Mensaje;
@@ -35,21 +39,21 @@ public class Controlador implements IControlador, IControladorRemoto {
 	}
 	
 	@Override
-	public Integer obtenerCantidadMinimaJugadores() {
+	public int obtenerCantidadMinimaJugadores() {
 		try {
 			return modelo.obtenerCantidadMinimaJugadores();
 		} catch(RemoteException e) {
-			vista.mostrarMensajeError("Error: Remote Exception");
+			vista.mostrarMensajeError("Error: Remote Exception " + e.getMessage());
 			return -1;
 		}
 	}
 	
 	@Override
-	public Integer obtenerCantidadMaximaJugadores() {
+	public int obtenerCantidadMaximaJugadores() {
 		try {
 			return modelo.obtenerCantidadMaximaJugadores();
 		} catch(RemoteException e) {
-			vista.mostrarMensajeError("Error: Remote Exception");
+			vista.mostrarMensajeError("Error: Remote Exception " + e.getMessage());
 			return -1;
 		}
 	}
@@ -66,11 +70,11 @@ public class Controlador implements IControlador, IControladorRemoto {
 			if(!modelo.esCantidadJugadoresDefinida()) {
 				vista.mostrarPanelDefinirCantidadJugadores();
 			} else {
-				vista.mostrarPanelCargaJugador();
+				vista.mostrarPanelCargaNombreJugador();
 			}
 			
 		} catch (RemoteException e) {
-			vista.mostrarMensajeError("Error: Remote Exception");
+			vista.mostrarMensajeError("Error: Remote Exception " + e.getMessage());
 		}
 	}
 		
@@ -105,23 +109,23 @@ public class Controlador implements IControlador, IControladorRemoto {
 			}
 			
 			if(eventoJugador == EventoJugador.MOSTRAR_PANTALLA_CARGA_NOMBRE_JUGADOR) {
-				vista.mostrarPanelCargaJugador();
+				vista.mostrarPanelCargaNombreJugador();
 			}
 			
 		} catch (NumberFormatException e) {
 			vista.mostrarMensajeError("Numero ingresado invalido");
 		} catch(RemoteException e) {
-			vista.mostrarMensajeError("Error: Remote Exception");
+			vista.mostrarMensajeError("Error: Remote Exception " + e.getMessage());
 		}
 	}	
 	
 	@Override
-	public void mostrarPanelCargaJugador() {
-		vista.mostrarPanelCargaJugador();
+	public void mostrarPanelCargaNombreJugador() {
+		vista.mostrarPanelCargaNombreJugador();
 	}
 
 	@Override
-	public void obtenerDatosCargaJugador(String nombreNuevoJugador) {
+	public void obtenerDatosCargaNombreJugador(String nombreNuevoJugador) {
 		try {
 			
 			if(nombreNuevoJugador == null || nombreNuevoJugador.isBlank()) {
@@ -143,20 +147,15 @@ public class Controlador implements IControlador, IControladorRemoto {
 				return;
 			}
 			
-			if(eventoJugador == EventoJugador.EVENTO_GLOBAL) {
-				UUID jugadorId = mensaje.get("id", UUID.class);
-				setJugadorAsignado(jugadorId);
-			}
-			
+			UUID jugadorId = mensaje.get("id", UUID.class);
+			setJugadorAsignado(jugadorId);
+						
 			if(eventoJugador == EventoJugador.MOSTRAR_PANTALLA_ESPERA_JUGADORES) {
-				UUID jugadorId = mensaje.get("id", UUID.class);
-				setJugadorAsignado(jugadorId);
 				vista.mostrarPanelEsperaJugadores();
-				return;
-			}	
-			
+			}
+					
 		} catch(RemoteException e) {
-			vista.mostrarMensajeError("Error: Remote Exception");
+			vista.mostrarMensajeError("Error: Remote Exception " + e.getMessage());
 		}
 	}
 	
@@ -165,9 +164,43 @@ public class Controlador implements IControlador, IControladorRemoto {
 		vista.mostrarPanelEsperaJugadores();
 	}
 	
-	public void mostrarPanelRondaJugador() {
+	@Override
+	public void mostrarPanelNombresJugadoresCargados() {
+		vista.mostrarPanelNombresJugadoresCargados();
+	}
+	
+	@Override
+	public List<String> obtenerNombresJugadores() {
+		try {
+			return modelo.obtenerNombresJugadores();
+		} catch(RemoteException e) {
+			vista.mostrarMensajeError("Error: Remote Exception " + e.getMessage());
+			return List.of();
+		}
+	}
+	
+	@Override
+	public void iniciarRonda() {
 		try {
 			
+			Mensaje mensaje = modelo.iniciarRonda();
+			
+			EventoJugador eventoJugador = mensaje.get("EventoJugador", EventoJugador.class);
+			
+			if(eventoJugador == EventoJugador.MOSTRAR_PANTALLA_ESPERA_JUGADORES) {
+				vista.mostrarPanelEsperaJugadores();
+				return;
+			}
+			
+		} catch(RemoteException e) {
+			vista.mostrarMensajeError("Error: Remote Exception " + e.getMessage());
+		}
+	}
+	
+	@Override
+	public void mostrarPanelRondaJugador() {
+		try {
+
 			if(modelo.obtenerJugadorActualId().equals(jugadorAsignado)) {
 				vista.mostrarPanelRondaJugadorTurno();
 			} else {
@@ -175,19 +208,120 @@ public class Controlador implements IControlador, IControladorRemoto {
 			}	
 			
 		} catch(RemoteException e) {
-			vista.mostrarMensajeError("Error: Remote Exception");
+			vista.mostrarMensajeError("Error: Remote Exception " + e.getMessage());
 		}	
 	}
 	
 	@Override
-	public void actualizar(IObservableRemoto arg0, Object evento) throws RemoteException {
-		if (evento instanceof EventoGeneral) {
-			switch((EventoGeneral) evento) {				
+	public String obtenerNombreJugadorActual() {
+		try {
+			return modelo.obtenerNombreJugadorActual();
+		} catch(RemoteException e) {
+			vista.mostrarMensajeError("Error: Remote Exception " + e.getMessage());
+			return "";
+		}
+	}
+
+	@Override
+	public List<String> obtenerMazoParejas() {
+		try {
+			return modelo.obtenerMazoParejas();
+		} catch(RemoteException e) {
+			vista.mostrarMensajeError("Error: Remote Exception " + e.getMessage());
+			return List.of();
+		}
+	}
+
+	@Override
+	public List<CartaDTO> obtenerMazoJugador() {
+		try {
+			
+			List<Carta> cartasJugador =  modelo.obtenerMazoJugador(jugadorAsignado);
+			
+			return cartasJugador
+					.stream()
+					.map(carta -> new CartaDTO(
+							carta.getId(), 
+							carta.getTipo(), 
+							carta.getNumero()))
+					.toList();
+
+		} catch(NoSuchElementException e) {
+			vista.mostrarMensajeError("Error: No se encontro el usuario solicitado");
+			return List.of();
+		} catch(RemoteException e) {
+			vista.mostrarMensajeError("Error: Remote Exception " + e.getMessage());
+			return List.of();
+		}
+	}
+
+	@Override
+	public int obtenerCantidadCartasJugadoresDerecha() {
+		try {
+			return modelo.obtenerCantidadCartasJugadoresDerecha();
+		} catch(RemoteException e) {
+			vista.mostrarMensajeError("Error: Remote Exception " + e.getMessage());
+			return -1;
+		}
+	}
+	
+	@Override
+	public void obtenerDatosCargaRondaJugadorTurno(String indiceCartaJugadorDerecha) {
+		try {
+			
+			if(indiceCartaJugadorDerecha == null || indiceCartaJugadorDerecha.isBlank()) {
+				vista.mostrarMensajeError("El indice de la carta elegida no puede ser vacia");
+				return;
+			}	
+			
+			Integer indice = Integer.parseInt(indiceCartaJugadorDerecha.trim());
+			
+			modelo.tomarCartaJugadorDerecha(indice);
+						
+		} catch (NumberFormatException e) {
+			vista.mostrarMensajeError("Numero ingresado invalido");	
+		} catch(RemoteException e) {
+			vista.mostrarMensajeError("Error: Remote Exception " + e.getMessage());
+		}
+	}
+	
+	@Override
+	public void mostrarPanelFinalizarRonda() {
+		vista.mostrarPanelFinalizarRonda();
+	}
+	
+	@Override
+	public String obtenerNombreJugadorGanador() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String obtenerNombreJugadorPerdedor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
+	public void actualizar(IObservableRemoto arg0, Object objeto) throws RemoteException {
+		
+		EventoGeneral evento = (EventoGeneral) objeto;
+		
+		switch(evento) {				
+			case MOSTRAR_PANTALLA_NOMBRES_JUGADORES_CARGADOS:
+				mostrarPanelNombresJugadoresCargados();
+				break;
 			case MOSTRAR_PANTALLA_RONDA_JUGADORES:
+				mostrarPanelRondaJugador();	
+				break;
+			case CONTINUAR_SIGUIENTE_TURNO_RONDA:
 				mostrarPanelRondaJugador();
+				break;
+			case FINALIZAR_RONDA:
+				mostrarPanelFinalizarRonda();
+				break;
 			default:
 				break;				
-			}
 		}	
 	}
 	

@@ -2,9 +2,11 @@ package ar.edu.unlu.zombie.modelo.entidades;
 
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.List;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Stack;
+import java.util.stream.Collectors;
+
 import ar.edu.unlu.zombie.modelo.enumerados.TipoCarta;
 
 public class Mazo implements Serializable {
@@ -35,20 +37,17 @@ public class Mazo implements Serializable {
 	}
 	
 	public Boolean esVacio() {
-		return mazo.empty();
+		return mazo.isEmpty();
 	}
 	
 	public Carta getCartaTope() {
 		return mazo.pop();
 	}
 			
-	@Override
-	public String toString() {
-		ArrayList<String> cartas = new ArrayList<>();
-		for (Carta carta: this.mazo) {
-			cartas.add(carta.valorCarta());
-		}
-		return cartas.toString();
+	public List<String> getMazoStringList() {
+	    return mazo.stream()
+	    		.map(Carta::toString)
+	            .collect(Collectors.toList());
 	}
 	
 }

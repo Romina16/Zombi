@@ -1,13 +1,16 @@
 package ar.edu.unlu.zombie.vista.administradores;
 
+import java.util.List;
+
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import ar.edu.unlu.zombie.interfaces.IControlador;
 import ar.edu.unlu.zombie.interfaces.IVista;
+import ar.edu.unlu.zombie.modelo.dto.CartaDTO;
 import ar.edu.unlu.zombie.vista.ui.JFramePrincipal;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelCantidadJugadores;
-import ar.edu.unlu.zombie.vista.ui.paneles.JPanelCargaJugador;
+import ar.edu.unlu.zombie.vista.ui.paneles.JPanelCargaNombreJugador;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelEspera;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelMenuPrincipal;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelRondaJugadorObservador;
@@ -20,7 +23,7 @@ public class AdministradorVistaUI implements IVista {
 	private JPanelMenuPrincipal panelMenuPrincipal;
 	private JPanelCantidadJugadores panelCantidadJugadores;
 	private JPanelEspera panelEspera;
-	private JPanelCargaJugador panelCargaJugador;
+	private JPanelCargaNombreJugador panelCargaJugador;
 	private JPanelRondaJugadorTurno panelRondaJugadorTurno;
 	private JPanelRondaJugadorObservador panelRondaJugadorObservador;
 	
@@ -30,7 +33,7 @@ public class AdministradorVistaUI implements IVista {
 		panelMenuPrincipal = new JPanelMenuPrincipal(this);
 		panelCantidadJugadores = new JPanelCantidadJugadores(this);
 		panelEspera = new JPanelEspera(this);
-		panelCargaJugador = new JPanelCargaJugador(this);
+		panelCargaJugador = new JPanelCargaNombreJugador(this);
 		panelRondaJugadorTurno = new JPanelRondaJugadorTurno(this);
 		panelRondaJugadorObservador = new JPanelRondaJugadorObservador(this);		
 		
@@ -62,12 +65,12 @@ public class AdministradorVistaUI implements IVista {
 	}	
 	
 	@Override
-	public Integer obtenerCantidadMinimaJugadores() {
+	public int obtenerCantidadMinimaJugadores() {
 		return controlador.obtenerCantidadMinimaJugadores();
 	}
 	
 	@Override
-	public Integer obtenerCantidadMaximaJugadores() {
+	public int obtenerCantidadMaximaJugadores() {
 		return controlador.obtenerCantidadMaximaJugadores();
 	}
 		
@@ -97,13 +100,13 @@ public class AdministradorVistaUI implements IVista {
 	}
 	
 	@Override
-	public void mostrarPanelCargaJugador() {
+	public void mostrarPanelCargaNombreJugador() {
 		framePrincipal.showPanel("Carga de Jugador");
 	}
 	
 	@Override
-	public void obtenerDatosCargaJugador(String nombreJugador) {
-		controlador.obtenerDatosCargaJugador(nombreJugador);
+	public void obtenerDatosCargaNombreJugador(String nombreJugador) {
+		controlador.obtenerDatosCargaNombreJugador(nombreJugador);
 	}
 	
 	@Override
@@ -116,6 +119,26 @@ public class AdministradorVistaUI implements IVista {
 		framePrincipal.showPanel("Jugador Observador");
 	}
 	
+	@Override
+	public String obtenerNombreJugadorActual() {
+		return controlador.obtenerNombreJugadorActual();
+	}
+
+	@Override
+	public List<String> obtenerMazoParejas() {
+		return controlador.obtenerMazoParejas();
+	}
+
+	@Override
+	public List<CartaDTO> obtenerMazoJugador() {
+		return controlador.obtenerMazoJugador();
+	}
+
+	@Override
+	public int obtenerCantidadCartasJugadoresDerecha() {
+		return controlador.obtenerCantidadCartasJugadoresDerecha();
+	}
+		
 	@Override
 	public void salirJuego() {
 		System.exit(0);
@@ -140,5 +163,47 @@ public class AdministradorVistaUI implements IVista {
 				JOptionPane.ERROR_MESSAGE
 	    );
 	}
-	
+
+	@Override
+	public List<String> obtenerNombresJugadores() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void mostrarPanelNombresJugadoresCargados() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void iniciarRonda() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void obtenerDatosCargaRondaJugadorTurno(String numeroCarta) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mostrarPanelFinalizarRonda() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String obtenerNombreJugadorGanador() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String obtenerNombreJugadorPerdedor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

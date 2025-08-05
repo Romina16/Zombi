@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 
-public class JPanelCargaJugador extends JPanel {
+public class JPanelCargaNombreJugador extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private IVista administradoVista;
@@ -19,7 +19,7 @@ public class JPanelCargaJugador extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public JPanelCargaJugador(IVista administradorVista) {
+	public JPanelCargaNombreJugador(IVista administradorVista) {
 		
 		this.administradoVista = administradorVista;
 		
@@ -50,7 +50,7 @@ public class JPanelCargaJugador extends JPanel {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nombreJugador = textField.getText();
-				administradorVista.obtenerDatosCargaJugador(nombreJugador);
+				administradorVista.obtenerDatosCargaNombreJugador(nombreJugador);
 			}
 		});
 		btnNewButton_1.setBounds(355, 74, 85, 21);

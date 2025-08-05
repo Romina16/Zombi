@@ -8,23 +8,25 @@ import ar.edu.unlu.rmimvc.RMIMVCException;
 import ar.edu.unlu.rmimvc.cliente.Cliente;
 import ar.edu.unlu.zombie.controlador.Controlador;
 import ar.edu.unlu.zombie.interfaces.IVista;
+import ar.edu.unlu.zombie.vista.administradores.AdministradorVistaConsola;
 import ar.edu.unlu.zombie.vista.administradores.AdministradorVistaUI;
 
 public class AppCliente {
 	
 	private static final String IP_SERVIDOR = "127.0.0.1";
 	private static final Integer PUERTO_SERVIDOR = 9999;
-
+	private static final String IP_CLIENTE = "127.0.0.1";
+	
 	public static void main(String[] args) throws RemoteException {
 
-		String ipCliente = (String) JOptionPane.showInputDialog(
-			null, 
-			"Seleccione la IP en la que escuchar� peticiones el cliente", "IP del cliente", 
-			JOptionPane.QUESTION_MESSAGE, 
-			null,
-			null,
-			null
-		);
+//		String ipCliente = (String) JOptionPane.showInputDialog(
+//			null, 
+//			"Seleccione la IP en la que escuchar� peticiones el cliente", "IP del cliente", 
+//			JOptionPane.QUESTION_MESSAGE, 
+//			null,
+//			null,
+//			null
+//		);
 		
 		String portCliente = (String) JOptionPane.showInputDialog(
 			null, 
@@ -32,17 +34,18 @@ public class AppCliente {
 			JOptionPane.QUESTION_MESSAGE,
 			null,
 			null,
-			9999
+			9998
 		);
 		
-        IVista vista = new AdministradorVistaUI();   
+        //IVista vista = new AdministradorVistaUI();   
+        IVista vista = new AdministradorVistaConsola();   
         Controlador controlador = new Controlador();             
 
         controlador.setVista(vista);
         vista.setControlador(controlador);
 
         Cliente c = new Cliente(
-			ipCliente, 
+			IP_CLIENTE, 
 			Integer.parseInt(portCliente), 
 			IP_SERVIDOR, 
 			PUERTO_SERVIDOR

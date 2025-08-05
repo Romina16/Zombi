@@ -1,30 +1,43 @@
 package ar.edu.unlu.zombie.modelo.dto;
 
+import java.io.Serializable;
+import java.util.UUID;
+
 import ar.edu.unlu.zombie.modelo.enumerados.TipoCarta;
-//DATA TRANSFER OBJECT
-public class CartaDTO {
+
+public class CartaDTO implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
+	private UUID id;
 	private TipoCarta tipo;
 	private Integer numero;
 	
-//---------------------------------------------------
-//constructor carta comun
-	public CartaDTO(TipoCarta tip,int Numero) {
-		tipo = tip;
-		numero = Numero;
+	public CartaDTO(UUID id, TipoCarta tipo, int numero) {
+		this.id = id;
+		this.tipo = tipo;
+		this.numero = numero;
 	}
-//constructor carta comodin
-	public CartaDTO() {
-		tipo = null;
-		numero = 0;
+	
+	public UUID getId() {
+		return id;
 	}
-//---------------------------------------------------
-// getters y setters
+
 	public TipoCarta getTipo() {
 		return tipo;
 	}
+	
 	public Integer getNumero() {
 		return numero;
 	}
-//---------------------------------------------------
+	
+	@Override
+	public String toString() {
+		if(tipo != TipoCarta.COMODIN) {
+			return "" + tipo + " " + numero;
+		} else {
+			return tipo.toString();
+		}
+	}
 
 }

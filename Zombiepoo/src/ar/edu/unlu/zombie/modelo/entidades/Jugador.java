@@ -2,11 +2,9 @@ package ar.edu.unlu.zombie.modelo.entidades;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
-
-import ar.edu.unlu.zombie.modelo.enumerados.TipoCarta;
+import java.util.stream.Collectors;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,13 +16,13 @@ public class Jugador implements Serializable {
 	private UUID id;
 	private String nombre;
 	private List<Carta> mazo;
-	private Boolean esGanador;
+	private Boolean esActivo;
 	
 	public Jugador(String nombre) {
 		this.id = UUID.randomUUID();
 		this.nombre = nombre;
 		this.mazo = new ArrayList<Carta>();
-		this.esGanador = false;
+		this.esActivo = true;
 	}
 	
 	public UUID getId() {
@@ -39,15 +37,15 @@ public class Jugador implements Serializable {
 		return this.mazo;
 	}
 
-	public Boolean getEsGanador() {
-		return this.esGanador;
+	public Boolean getEsActivo() {
+		return this.esActivo;
 	}
 
-	public void setEsGanador(Boolean esGanador) {
-		this.esGanador = esGanador;
+	public void setEsActivo(Boolean esActivo) {
+		this.esActivo = esActivo;
 	}
 	
-	public void agregarCartaAMazo(Carta carta) {
+	public void agregarCarta(Carta carta) {
 		this.mazo.add(carta);
 	}
 	
@@ -58,27 +56,7 @@ public class Jugador implements Serializable {
 	public void quitarCarta(Carta carta) {
 		mazo.remove(carta);
 	}
-
-	public String manoString() {
-		ArrayList<String> cartas = new ArrayList<>();
-		for (Carta carta : this.mazo) {
-			cartas.add(carta.valorCarta());
-		}
-		return cartas.toString();
-	}
-	
-	public Integer cantidadCartas() {
-		return mazo.size();
-	}
-	
-	public Boolean esComodin(int posicion) {
-		return mazo.get(posicion).getTipo() == TipoCarta.COMODIN;
-	}	
-	
-	public Boolean esComodin(Carta carta) {
-		return carta.getTipo() == TipoCarta.COMODIN;
-	}	
-	
+		
 	public Boolean soloQuedaComodinEnMazo() {
 		return (this.mazo.size() == 1) && (this.mazo.get(0).EsComodin());
 	}
@@ -116,6 +94,12 @@ public class Jugador implements Serializable {
 	    mazo.removeAll(parejas);
 
 	    return parejas;
+	}
+	
+	public List<String> getMazoStringList() {
+	    return mazo.stream()
+	    		.map(Carta::toString)
+	            .collect(Collectors.toList());
 	}
 
 }
