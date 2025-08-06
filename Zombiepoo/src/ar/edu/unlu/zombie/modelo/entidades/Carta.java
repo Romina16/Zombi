@@ -42,7 +42,7 @@ public class Carta implements Serializable {
 	public boolean esPareja(Carta otraCarta) {
 		return (this.numero == otraCarta.numero);
 	}
-
+	
 	@Override
 	public String toString() {
 		if(tipo != TipoCarta.COMODIN) {

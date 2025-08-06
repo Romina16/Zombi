@@ -2,6 +2,7 @@ package ar.edu.unlu.zombie.modelo;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Stack;
 import java.util.UUID;
 import java.io.Serializable;
 import java.rmi.RemoteException;
@@ -28,14 +29,12 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
 	private int cantidadJugadoresActuales = -1;
 	private List<Jugador> jugadores;
 	private Mazo mazo;
+	private Stack<Carta> mazoParejas;
 	
 	private Integer posicionJugadorActual = 0;
 	
 	private int jugadoresEnEspera = 0;
-	
-	private Jugador jugadorGanador = null;
-	private Jugador jugadorPerdedor = null;
-	
+		
 	public Modelo() {
 		this.observadores = new ArrayList<>();
 		this.jugadores = new ArrayList<Jugador>();
@@ -67,38 +66,19 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
 	public UUID obtenerJugadorActualId() throws RemoteException {
 		return jugadores.get(posicionJugadorActual).getId();
 	}
-	
-	public Jugador obtenerJugador(UUID id) {
-	    return jugadores.stream()
-	                    .filter(j -> j.getId().equals(id))
-	                    .findFirst()
-	                    .orElseThrow(() ->
-	                        new NoSuchElementException("No existe jugador con id " + id)
-	                    );
-	}	
-		
+			
 	private Jugador obtenerJugadorActual() {
 		return jugadores.get(posicionJugadorActual);
 	}
-	
-	private int posicionJugadorDerecha() {
-    	int posicionJugadorDerecha = ((posicionJugadorActual - 1) != -1)? (posicionJugadorActual - 1): (cantidadJugadoresActuales - 1);
-    	
-    	while(!jugadores.get(posicionJugadorDerecha).getEsActivo()) {
-    		posicionJugadorDerecha = ((posicionJugadorActual - 1) != -1)? (posicionJugadorActual - 1): (cantidadJugadoresActuales - 1);
-    	}
-    	
-        return posicionJugadorDerecha;
-	}
 		
-	private Jugador obtenerJugadorDerecha() {
-		return jugadores.get(posicionJugadorDerecha());
-	}
-	
 	@Override
 	public Boolean esCantidadJugadoresDefinida() throws RemoteException {
 		return !(cantidadJugadoresActuales == -1);
 	}
+	
+	/*
+	 * DEFINIR CANTIDAD DE JUGADORES
+	 */
 	
 	@Override
 	public Mensaje definirCantidadJugadoresMaximo(Integer cantidadJugadores) throws RemoteException {
@@ -124,6 +104,10 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
 			    .build();
 	}
 
+	/*
+	 * CARGAR NOMBRE JUGADOR
+	 */
+	
  	private Boolean validarNombreJugador(String nombreNuevoJugador) {
 	    if (nombreNuevoJugador == null || nombreNuevoJugador.isBlank()) {
 	        return false;
@@ -146,11 +130,11 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
         }
     }
  	
-//	private void descarte() {
-//		for(Jugador jugador: jugadores) {
-//			jugador.descartar();
-//		}
-//	}
+	private void descarteInicialJugadores() {
+		for(Jugador jugador: jugadores) {
+			mazoParejas.addAll(jugador.descartar());
+		}
+	}
 
 	@Override
 	public Mensaje agregarNuevoJugador(String nombreNuevoJugador) throws RemoteException {
@@ -180,8 +164,9 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
 		}
 		
 		mazo = new Mazo();
+		mazoParejas = new Stack<>();
 		repartirCartas();
-//		descarte();	
+		descarteInicialJugadores();
 		this.notificarObservadores(EventoGeneral.MOSTRAR_PANTALLA_NOMBRES_JUGADORES_CARGADOS);
 		return new Mensaje
 				.Builder()
@@ -226,13 +211,44 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
 	}
 
 	@Override
-	public List<String> obtenerMazoParejas() throws RemoteException {
-		return (!mazo.esVacio())? mazo.getMazoStringList(): List.of("Vacio");
+	public List<Carta> obtenerUltimasDosCartasMazoParejas() throws RemoteException {
+	    if (mazoParejas.size() >= 2) {
+	        Carta ultimaCarta = mazoParejas.getLast(); 
+	        Carta penultimaCarta = mazoParejas.get(mazoParejas.size() - 1); 
+
+	        return List.of(penultimaCarta, ultimaCarta);
+	    } 
+	        
+	    return List.of(); 
+	    
 	}
+	
+	private Jugador obtenerJugador(UUID id) {
+    return jugadores.stream()
+                    .filter(jugador -> jugador.getId().equals(id))
+                    .findFirst()
+                    .orElseThrow(() ->
+                        new NoSuchElementException("No existe jugador con id " + id)
+                    );
+}	
 
 	@Override
 	public List<Carta> obtenerMazoJugador(UUID id) throws RemoteException {
 		return obtenerJugador(id).getMazo();
+	}
+	
+	private int posicionJugadorDerecha() {
+    	int posicionJugadorDerecha = ((posicionJugadorActual - 1) != -1)? (posicionJugadorActual - 1): (cantidadJugadoresActuales - 1);
+    	
+    	while(!jugadores.get(posicionJugadorDerecha).getEsActivo()) {
+    		posicionJugadorDerecha = ((posicionJugadorActual - 1) != -1)? (posicionJugadorActual - 1): (cantidadJugadoresActuales - 1);
+    	}
+    	
+        return posicionJugadorDerecha;
+	}
+		
+	private Jugador obtenerJugadorDerecha() {
+		return jugadores.get(posicionJugadorDerecha());
 	}
 
 	@Override
@@ -260,19 +276,18 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
 	    
 	public Mensaje tomarCartaJugadorDerecha(int indiceCartaJugadorDerecha) throws RemoteException {
 	
-		Carta cartaAQuitar = obtenerJugadorDerecha().getMazo().get(indiceCartaJugadorDerecha);
+		Carta cartaAQuitar = obtenerJugadorDerecha().getMazo().get(indiceCartaJugadorDerecha - 1);
 		obtenerJugadorDerecha().quitarCarta(cartaAQuitar);
 		
 		obtenerJugadorActual().agregarCarta(cartaAQuitar);
-		//obtenerJugadorActual().descartar();
-		
-		this.posicionJugadorActual = siguientePosicionJugadorActivo(posicionJugadorActual);
-		
+		mazoParejas.addAll(obtenerJugadorActual().descartar());
+				
 		if(obtenerJugadorActual().getMazo().isEmpty()) {
 			obtenerJugadorActual().setEsActivo(false);
 		}
 		
 		if(hayMasDeUnJugadorActivo()) {
+			this.posicionJugadorActual = siguientePosicionJugadorActivo(posicionJugadorActual);
 			notificarObservadores(EventoGeneral.CONTINUAR_SIGUIENTE_TURNO_RONDA);
 			return new Mensaje
 					.Builder()
@@ -280,21 +295,25 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
 				    .build();
 		}		
 		
-		notificarObservadores(EventoGeneral.FINALIZAR_RONDA);
+		notificarObservadores(EventoGeneral.FINAL_RONDA);
 		return new Mensaje
 				.Builder()
 			    .put("EventoJugador", EventoJugador.EVENTO_GLOBAL)
 			    .build();
 	}
 	
-	@Override
-	public String obtenerNombreJugadorGanador() throws RemoteException {
-		return jugadorGanador.getNombre();
-	}
-
+	/*
+	 * FINAL DE RONDA
+	 */
+	
 	@Override
 	public String obtenerNombreJugadorPerdedor() throws RemoteException {
-		return jugadorPerdedor.getNombre();
+	    Jugador ultimoJugadorActivo = jugadores.stream()
+	                                      .filter(Jugador::getEsActivo)
+	                                      .findFirst()
+	                                      .orElseThrow(() -> new NoSuchElementException("No hay jugadores activos"));
+
+	    return ultimoJugadorActivo.getNombre();
 	}
 
 }

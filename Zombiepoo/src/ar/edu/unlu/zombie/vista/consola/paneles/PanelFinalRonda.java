@@ -4,15 +4,14 @@ import ar.edu.unlu.zombie.interfaces.IPanelConsola;
 import ar.edu.unlu.zombie.interfaces.IVista;
 import ar.edu.unlu.zombie.vista.consola.JFramePrincipal;
 
-public class PanelFinalizarRonda implements IPanelConsola {
+public class PanelFinalRonda implements IPanelConsola {
 	
 	private IVista administradorVista;
 	private JFramePrincipal frame;
 	
-	private String nombreJugadorGanador;
 	private String nombreJugadorPerdedor;
 	
-	public PanelFinalizarRonda(
+	public PanelFinalRonda(
 			IVista administradorVista, 
 			JFramePrincipal frame) {
 		this.administradorVista = administradorVista;
@@ -20,7 +19,6 @@ public class PanelFinalizarRonda implements IPanelConsola {
 	}
 	
     private void obtenerDatosPanel() {
-    	nombreJugadorGanador = administradorVista.obtenerNombreJugadorGanador();
     	nombreJugadorPerdedor = administradorVista.obtenerNombreJugadorPerdedor();
     }
 		
@@ -33,8 +31,6 @@ public class PanelFinalizarRonda implements IPanelConsola {
     private void obtenerPanel() {
     	frame.appendLine("=== FIN DEL JUEGO ===");
         frame.appendLine("");
-        frame.appendLine("");
-        frame.appendLine("Jugador ganador: " + nombreJugadorGanador);
         frame.appendLine("");
         frame.appendLine("Jugador perdedor: " + nombreJugadorPerdedor);
         frame.appendLine("");

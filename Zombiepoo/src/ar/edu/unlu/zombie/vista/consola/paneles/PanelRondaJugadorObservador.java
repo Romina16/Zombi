@@ -13,7 +13,7 @@ public class PanelRondaJugadorObservador implements IPanelConsola {
 	private JFramePrincipal frame;
 	
 	private String nombreJugadorActual;
-	private List<String> mazoParejas;
+	private List<CartaDTO> mazoParejas;
 	private List<CartaDTO> mazoJugador;
 	
 	public PanelRondaJugadorObservador(
@@ -25,7 +25,7 @@ public class PanelRondaJugadorObservador implements IPanelConsola {
 	
     private void obtenerDatosPanel() {
     	nombreJugadorActual = administradorVista.obtenerNombreJugadorActual();
-    	mazoParejas = administradorVista.obtenerMazoParejas();
+    	mazoParejas = administradorVista.obtenerUltimasDosCartasMazoParejas();
     	mazoJugador = administradorVista.obtenerMazoJugador();
     }
 		
@@ -41,7 +41,11 @@ public class PanelRondaJugadorObservador implements IPanelConsola {
         frame.appendLine("Turno del jugador: " + nombreJugadorActual);
         frame.appendLine("");
         frame.appendLine("");
-        frame.appendLine("Mazo parejas: " + mazoParejas);
+        if(!mazoParejas.isEmpty()) {
+        	frame.appendLine("Mazo parejas: " + mazoParejas.get(0).toString() + ", " + mazoParejas.get(1).toString() + "");
+        } else {
+        	frame.appendLine("Mazo parejas: No hay cartas");
+        }
         frame.appendLine("");
         frame.appendLine("");
         frame.appendLine("Cartas jugador: " + mazoJugador);

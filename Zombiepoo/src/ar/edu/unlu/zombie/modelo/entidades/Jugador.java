@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -62,33 +61,30 @@ public class Jugador implements Serializable {
 	}
 	
 	public List<Carta> descartar() {
-
 	    if (mazo.isEmpty()) {
 	        return Collections.emptyList();
 	    }
 
 	    List<Carta> mazoAuxiliar = new ArrayList<>(mazo);
-
 	    mazoAuxiliar.sort(Comparator.comparingInt(Carta::getNumero));
 
 	    List<Carta> parejas = new ArrayList<>();
 
-	    for (int posicion = 0; posicion < mazoAuxiliar.size(); ) {
-	        Carta cartaActual = mazoAuxiliar.get(posicion);
-
-	        if (cartaActual.EsComodin()) {
-	            posicion ++;
+	    int i = 0;
+	    while (i < mazoAuxiliar.size() - 1) {
+	        Carta actual = mazoAuxiliar.get(i);
+	        if (actual.EsComodin()) {
+	            i++;
 	            continue;
 	        }
-
-	        if((posicion + 1 < mazoAuxiliar.size()) && (cartaActual.getNumero() == mazoAuxiliar.get(posicion + 1).getNumero())) {
-	        	parejas.add(cartaActual);
-	        	parejas.add(mazoAuxiliar.get(posicion + 1));
-	        	posicion =+ 2;
-	            continue;
+	        Carta siguiente = mazoAuxiliar.get(i + 1);
+	        if (!siguiente.EsComodin() && actual.getNumero().equals(siguiente.getNumero())) {
+	            parejas.add(actual);
+	            parejas.add(siguiente);
+	            i += 2; 
+	        } else {
+	            i++;
 	        }
-	        
-	        posicion ++;
 	    }
 	    
 	    mazo.removeAll(parejas);
@@ -96,10 +92,15 @@ public class Jugador implements Serializable {
 	    return parejas;
 	}
 	
-	public List<String> getMazoStringList() {
-	    return mazo.stream()
-	    		.map(Carta::toString)
-	            .collect(Collectors.toList());
+	// BORRAR
+	public String getMazoString() {
+		String resultado = "";
+		
+	    for(Carta carta: this.mazo) {
+	    	resultado += carta.toString() + ", ";
+	    }
+	    
+	    return resultado;
 	}
 
 }

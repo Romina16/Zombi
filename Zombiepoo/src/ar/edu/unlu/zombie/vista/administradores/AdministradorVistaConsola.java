@@ -11,7 +11,8 @@ import ar.edu.unlu.zombie.modelo.dto.CartaDTO;
 import ar.edu.unlu.zombie.vista.consola.JFramePrincipal;
 import ar.edu.unlu.zombie.vista.consola.paneles.PanelDefinirCantidadJugadores;
 import ar.edu.unlu.zombie.vista.consola.paneles.PanelCargaNombreJugador;
-import ar.edu.unlu.zombie.vista.consola.paneles.PanelEspera;
+import ar.edu.unlu.zombie.vista.consola.paneles.PanelEsperaJugadores;
+import ar.edu.unlu.zombie.vista.consola.paneles.PanelFinalRonda;
 import ar.edu.unlu.zombie.vista.consola.paneles.PanelNombresJugadoresCargados;
 import ar.edu.unlu.zombie.vista.consola.paneles.PanelMenuPrincipal;
 import ar.edu.unlu.zombie.vista.consola.paneles.PanelRondaJugadorObservador;
@@ -25,30 +26,33 @@ public class AdministradorVistaConsola implements IVista {
 	private IPanelConsola panelActual;
 	private PanelMenuPrincipal panelMenuPrincipal;
 	private PanelDefinirCantidadJugadores panelDefinirCantidadJugadores;
-	private PanelEspera panelEspera;
+	private PanelEsperaJugadores panelEsperaJugadores;
 	private PanelCargaNombreJugador panelCargaNombreJugador;
 	private PanelNombresJugadoresCargados panelNombresJugadoresCargados;
 	private PanelRondaJugadorTurno panelRondaJugadorTurno;
 	private PanelRondaJugadorObservador panelRondaJugadorObservador;
+	private PanelFinalRonda panelFinalRonda;
 	
 	public AdministradorVistaConsola() {
 		this.framePrincipal = new JFramePrincipal();
 		
 		panelMenuPrincipal = new PanelMenuPrincipal(this, framePrincipal);
 		panelDefinirCantidadJugadores = new PanelDefinirCantidadJugadores(this, framePrincipal);
-		panelEspera = new PanelEspera(this, framePrincipal);
+		panelEsperaJugadores = new PanelEsperaJugadores(this, framePrincipal);
 		panelCargaNombreJugador = new PanelCargaNombreJugador(this, framePrincipal);
 		panelNombresJugadoresCargados = new PanelNombresJugadoresCargados(this, framePrincipal);
 		panelRondaJugadorTurno = new PanelRondaJugadorTurno(this, framePrincipal);
 		panelRondaJugadorObservador = new PanelRondaJugadorObservador(this, framePrincipal);	
+		panelFinalRonda = new PanelFinalRonda(this, framePrincipal);
 		
 		addPanel("Menu Principal", panelMenuPrincipal);
-		addPanel("Carga cantidad de jugadores", panelDefinirCantidadJugadores);
-		addPanel("Espera", panelEspera);
-		addPanel("Carga nombre de Jugador", panelCargaNombreJugador);
-		addPanel("Jugadores cargados", panelNombresJugadoresCargados);
+		addPanel("Definir Cantidad de Jugadores", panelDefinirCantidadJugadores);
+		addPanel("Espera Jugadores", panelEsperaJugadores);
+		addPanel("Carga Nombre de Jugador", panelCargaNombreJugador);
+		addPanel("Nombres Jugadores Cargados", panelNombresJugadoresCargados);
 		addPanel("Jugador Turno", panelRondaJugadorTurno);
 		addPanel("Jugador Observador", panelRondaJugadorObservador);
+		addPanel("Final de Ronda", panelFinalRonda);
 						
 		showFrame();
 							        
@@ -104,7 +108,7 @@ public class AdministradorVistaConsola implements IVista {
 	
 	@Override
 	public void mostrarPanelDefinirCantidadJugadores() {
-		showPanel("Carga cantidad de jugadores");
+		showPanel("Definir Cantidad de Jugadores");
 	}
 	
 	@Override
@@ -114,12 +118,12 @@ public class AdministradorVistaConsola implements IVista {
 	
 	@Override
 	public void mostrarPanelEsperaJugadores() {
-		showPanel("Espera");
+		showPanel("Espera Jugadores");
 	}
 	
 	@Override
 	public void mostrarPanelCargaNombreJugador() {
-		showPanel("Carga nombre de Jugador");
+		showPanel("Carga Nombre de Jugador");
 	}
 	
 	@Override
@@ -129,7 +133,7 @@ public class AdministradorVistaConsola implements IVista {
 		
 	@Override
 	public void mostrarPanelNombresJugadoresCargados() {
-		showPanel("Jugadores cargados");
+		showPanel("Nombres Jugadores Cargados");
 	}
 	
 	@Override
@@ -158,8 +162,8 @@ public class AdministradorVistaConsola implements IVista {
 	}
 
 	@Override
-	public List<String> obtenerMazoParejas() {
-		return controlador.obtenerMazoParejas();
+	public List<CartaDTO> obtenerUltimasDosCartasMazoParejas() {
+		return controlador.obtenerUltimasDosCartasMazoParejas();
 	}
 
 	@Override
@@ -178,15 +182,10 @@ public class AdministradorVistaConsola implements IVista {
 	}
 	
 	@Override
-	public void mostrarPanelFinalizarRonda() {
-		showPanel("Finalizar ronda");
+	public void mostrarPanelFinalRonda() {
+		showPanel("Final de Ronda");
 	}
 	
-	@Override
-	public String obtenerNombreJugadorGanador() {
-		return controlador.obtenerNombreJugadorGanador();
-	}
-
 	@Override
 	public String obtenerNombreJugadorPerdedor() {
 		return controlador.obtenerNombreJugadorPerdedor();

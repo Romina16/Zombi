@@ -223,9 +223,15 @@ public class Controlador implements IControlador, IControladorRemoto {
 	}
 
 	@Override
-	public List<String> obtenerMazoParejas() {
+	public List<CartaDTO> obtenerUltimasDosCartasMazoParejas() {
 		try {
-			return modelo.obtenerMazoParejas();
+			return modelo.obtenerUltimasDosCartasMazoParejas()
+					.stream()
+					.map(carta -> new CartaDTO(
+							carta.getId(), 
+							carta.getTipo(), 
+							carta.getNumero()))
+					.toList();
 		} catch(RemoteException e) {
 			vista.mostrarMensajeError("Error: Remote Exception " + e.getMessage());
 			return List.of();
@@ -286,20 +292,18 @@ public class Controlador implements IControlador, IControladorRemoto {
 	}
 	
 	@Override
-	public void mostrarPanelFinalizarRonda() {
-		vista.mostrarPanelFinalizarRonda();
+	public void mostrarPanelFinalRonda() {
+		vista.mostrarPanelFinalRonda();
 	}
 	
 	@Override
-	public String obtenerNombreJugadorGanador() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public String obtenerNombreJugadorPerdedor() {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			return modelo.obtenerNombreJugadorPerdedor();
+		} catch(RemoteException e) {
+			vista.mostrarMensajeError("Error: Remote Exception " + e.getMessage());
+			return "";
+		}
 	}
 	
 	@Override
@@ -317,8 +321,8 @@ public class Controlador implements IControlador, IControladorRemoto {
 			case CONTINUAR_SIGUIENTE_TURNO_RONDA:
 				mostrarPanelRondaJugador();
 				break;
-			case FINALIZAR_RONDA:
-				mostrarPanelFinalizarRonda();
+			case FINAL_RONDA:
+				mostrarPanelFinalRonda();
 				break;
 			default:
 				break;				

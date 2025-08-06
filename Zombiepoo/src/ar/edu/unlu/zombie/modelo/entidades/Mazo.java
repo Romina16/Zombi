@@ -14,7 +14,7 @@ public class Mazo implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private static final int VALOR_MIN = 1;
-    private static final int VALOR_MAX = 12;
+    private static final int VALOR_MAX = 13;
 	private Stack<Carta> mazo = new Stack<Carta>();
 	
 	public Mazo() {

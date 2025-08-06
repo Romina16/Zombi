@@ -125,11 +125,6 @@ public class AdministradorVistaUI implements IVista {
 	}
 
 	@Override
-	public List<String> obtenerMazoParejas() {
-		return controlador.obtenerMazoParejas();
-	}
-
-	@Override
 	public List<CartaDTO> obtenerMazoJugador() {
 		return controlador.obtenerMazoJugador();
 	}
@@ -189,19 +184,19 @@ public class AdministradorVistaUI implements IVista {
 	}
 
 	@Override
-	public void mostrarPanelFinalizarRonda() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String obtenerNombreJugadorGanador() {
+	public String obtenerNombreJugadorPerdedor() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public String obtenerNombreJugadorPerdedor() {
+	public void mostrarPanelFinalRonda() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<CartaDTO> obtenerUltimasDosCartasMazoParejas() {
 		// TODO Auto-generated method stub
 		return null;
 	}

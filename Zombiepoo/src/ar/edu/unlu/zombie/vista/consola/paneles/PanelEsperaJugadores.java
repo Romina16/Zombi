@@ -4,12 +4,12 @@ import ar.edu.unlu.zombie.interfaces.IPanelConsola;
 import ar.edu.unlu.zombie.interfaces.IVista;
 import ar.edu.unlu.zombie.vista.consola.JFramePrincipal;
 
-public class PanelEspera implements IPanelConsola {
+public class PanelEsperaJugadores implements IPanelConsola {
 	
 	private IVista administradorVista;
 	private JFramePrincipal frame;
 	
-	public PanelEspera(
+	public PanelEsperaJugadores(
 			IVista administradorVista, 
 			JFramePrincipal frame) {
 		this.administradorVista = administradorVista;
