@@ -8,6 +8,14 @@ import javax.swing.JPanel;
 import ar.edu.unlu.zombie.interfaces.IControlador;
 import ar.edu.unlu.zombie.interfaces.IVista;
 import ar.edu.unlu.zombie.modelo.dto.CartaDTO;
+import ar.edu.unlu.zombie.vista.consola.paneles.PanelCargaNombreJugador;
+import ar.edu.unlu.zombie.vista.consola.paneles.PanelDefinirCantidadJugadores;
+import ar.edu.unlu.zombie.vista.consola.paneles.PanelEsperaJugadores;
+import ar.edu.unlu.zombie.vista.consola.paneles.PanelFinalRonda;
+import ar.edu.unlu.zombie.vista.consola.paneles.PanelMenuPrincipal;
+import ar.edu.unlu.zombie.vista.consola.paneles.PanelNombresJugadoresCargados;
+import ar.edu.unlu.zombie.vista.consola.paneles.PanelRondaJugadorObservador;
+import ar.edu.unlu.zombie.vista.consola.paneles.PanelRondaJugadorTurno;
 import ar.edu.unlu.zombie.vista.ui.JFramePrincipal;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelCantidadJugadores;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelCargaNombreJugador;
@@ -21,28 +29,34 @@ public class AdministradorVistaUI implements IVista {
 	private IControlador controlador;
 	private JFramePrincipal framePrincipal;
 	private JPanelMenuPrincipal panelMenuPrincipal;
-	private JPanelCantidadJugadores panelCantidadJugadores;
-	private JPanelEspera panelEspera;
-	private JPanelCargaNombreJugador panelCargaJugador;
+//	private JPanelDefinirCantidadJugadores panelDefinirCantidadJugadores;
+	private JPanelEsperaJugadores panelEsperaJugadores;
+	private JPanelCargaNombreJugador panelCargaNombreJugador;
+	private JPanelNombresJugadoresCargados panelNombresJugadoresCargados;
 	private JPanelRondaJugadorTurno panelRondaJugadorTurno;
 	private JPanelRondaJugadorObservador panelRondaJugadorObservador;
+	private JPanelFinalRonda panelFinalRonda;
 	
 	public AdministradorVistaUI() {
 		this.framePrincipal = new JFramePrincipal();
 		
 		panelMenuPrincipal = new JPanelMenuPrincipal(this);
-		panelCantidadJugadores = new JPanelCantidadJugadores(this);
-		panelEspera = new JPanelEspera(this);
-		panelCargaJugador = new JPanelCargaNombreJugador(this);
+//		panelDefinirCantidadJugadores = new JPanelDefinirCantidadJugadores(this);
+		panelEsperaJugadores = new JPanelEsperaJugadores(this);
+		panelCargaNombreJugador = new JPanelCargaNombreJugador(this);
+		panelNombresJugadoresCargados = new JPanelNombresJugadoresCargados(this);
 		panelRondaJugadorTurno = new JPanelRondaJugadorTurno(this);
-		panelRondaJugadorObservador = new JPanelRondaJugadorObservador(this);		
+		panelRondaJugadorObservador = new JPanelRondaJugadorObservador(this);	
+		panelFinalRonda = new JPanelFinalRonda(this);
 		
-		framePrincipal.addPanel("Menu Principal", panelMenuPrincipal);
-		framePrincipal.addPanel("Carga cantidad de jugadores", panelCantidadJugadores);
-		framePrincipal.addPanel("Espera", panelEspera);
-		framePrincipal.addPanel("Carga de Jugador", panelCargaJugador);
-		framePrincipal.addPanel("Jugador Turno", panelRondaJugadorTurno);
-		framePrincipal.addPanel("Jugador Observador", panelRondaJugadorObservador);
+		addPanel("Menu Principal", panelMenuPrincipal);
+		addPanel("Definir Cantidad de Jugadores", panelDefinirCantidadJugadores);
+		addPanel("Espera Jugadores", panelEsperaJugadores);
+		addPanel("Carga Nombre de Jugador", panelCargaNombreJugador);
+		addPanel("Nombres Jugadores Cargados", panelNombresJugadoresCargados);
+		addPanel("Jugador Turno", panelRondaJugadorTurno);
+		addPanel("Jugador Observador", panelRondaJugadorObservador);
+		addPanel("Final de Ronda", panelFinalRonda);
 		
 		showFrame();
 	}
@@ -59,7 +73,7 @@ public class AdministradorVistaUI implements IVista {
         framePrincipal.showFrame();
     }
                         
-	@Override
+    @Override
 	public void setControlador(IControlador controlador) {
 		this.controlador = controlador;		
 	}	
@@ -76,7 +90,7 @@ public class AdministradorVistaUI implements IVista {
 		
 	@Override
 	public void mostrarPanelMenuPrincipal() {
-		framePrincipal.showPanel("Menu Principal");
+		showPanel("Menu Principal");
 	}
 	
 	@Override
@@ -85,8 +99,13 @@ public class AdministradorVistaUI implements IVista {
 	}
 	
 	@Override
+	public void salirJuego() {
+		System.exit(0);
+	}
+	
+	@Override
 	public void mostrarPanelDefinirCantidadJugadores() {
-		framePrincipal.showPanel("Carga cantidad de jugadores");
+		showPanel("Definir Cantidad de Jugadores");
 	}
 	
 	@Override
@@ -96,32 +115,52 @@ public class AdministradorVistaUI implements IVista {
 	
 	@Override
 	public void mostrarPanelEsperaJugadores() {
-		framePrincipal.showPanel("Espera");
+		showPanel("Espera Jugadores");
 	}
 	
 	@Override
 	public void mostrarPanelCargaNombreJugador() {
-		framePrincipal.showPanel("Carga de Jugador");
+		showPanel("Carga Nombre de Jugador");
 	}
 	
 	@Override
 	public void obtenerDatosCargaNombreJugador(String nombreJugador) {
 		controlador.obtenerDatosCargaNombreJugador(nombreJugador);
 	}
+		
+	@Override
+	public void mostrarPanelNombresJugadoresCargados() {
+		showPanel("Nombres Jugadores Cargados");
+	}
 	
 	@Override
+	public List<String> obtenerNombresJugadores() {
+		return controlador.obtenerNombresJugadores();
+	}
+	
+	@Override
+	public void iniciarRonda() {
+		controlador.iniciarRonda();
+	}	
+			
+	@Override
 	public void mostrarPanelRondaJugadorTurno() {
-		framePrincipal.showPanel("Jugador Turno");
+		showPanel("Jugador Turno");
 	}
 	
 	@Override
 	public void mostrarPanelRondaJugadorObservador() {
-		framePrincipal.showPanel("Jugador Observador");
+		showPanel("Jugador Observador");
 	}
 	
 	@Override
 	public String obtenerNombreJugadorActual() {
 		return controlador.obtenerNombreJugadorActual();
+	}
+
+	@Override
+	public List<CartaDTO> obtenerUltimasDosCartasMazoParejas() {
+		return controlador.obtenerUltimasDosCartasMazoParejas();
 	}
 
 	@Override
@@ -133,68 +172,30 @@ public class AdministradorVistaUI implements IVista {
 	public int obtenerCantidadCartasJugadoresDerecha() {
 		return controlador.obtenerCantidadCartasJugadoresDerecha();
 	}
-		
+	
 	@Override
-	public void salirJuego() {
-		System.exit(0);
+	public void obtenerDatosCargaRondaJugadorTurno(String indiceCartaJugadorDerecha) {
+		controlador.obtenerDatosCargaRondaJugadorTurno(indiceCartaJugadorDerecha);
 	}
 	
 	@Override
-	public void mostrarMensajeError(String mensaje) {
-		JOptionPane.showMessageDialog(
-				framePrincipal,
-				mensaje,
-				"Error",
-				JOptionPane.ERROR_MESSAGE
-	    );
+	public void mostrarPanelFinalRonda() {
+		showPanel("Final de Ronda");
 	}
-
-	@Override
-	public List<String> obtenerNombresJugadores() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void mostrarPanelNombresJugadoresCargados() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void iniciarRonda() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void obtenerDatosCargaRondaJugadorTurno(String numeroCarta) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	
 	@Override
 	public String obtenerNombreJugadorPerdedor() {
-		// TODO Auto-generated method stub
-		return null;
+		return controlador.obtenerNombreJugadorPerdedor();
 	}
-
-	@Override
-	public void mostrarPanelFinalRonda() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public List<CartaDTO> obtenerUltimasDosCartasMazoParejas() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	@Override
 	public void volverAlMenuPrincipal() {
-		// TODO Auto-generated method stub
+		controlador.volverAlMenuPrincipal();
+	}
 		
+	@Override
+	public void mostrarMensajeError(String mensaje) {
+
 	}
 
 }

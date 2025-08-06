@@ -19,15 +19,6 @@ public class AppCliente {
 	
 	public static void main(String[] args) throws RemoteException {
 
-//		String ipCliente = (String) JOptionPane.showInputDialog(
-//			null, 
-//			"Seleccione la IP en la que escuchar� peticiones el cliente", "IP del cliente", 
-//			JOptionPane.QUESTION_MESSAGE, 
-//			null,
-//			null,
-//			null
-//		);
-		
 		String portCliente = (String) JOptionPane.showInputDialog(
 			null, 
 			"Seleccione el puerto en el que escuchar� peticiones el cliente", "Puerto del cliente", 
@@ -37,8 +28,8 @@ public class AppCliente {
 			9998
 		);
 		
-        //IVista vista = new AdministradorVistaUI();   
-        IVista vista = new AdministradorVistaConsola();   
+        IVista vista = new AdministradorVistaUI();   
+        //IVista vista = new AdministradorVistaConsola();   
         Controlador controlador = new Controlador();             
 
         controlador.setVista(vista);
