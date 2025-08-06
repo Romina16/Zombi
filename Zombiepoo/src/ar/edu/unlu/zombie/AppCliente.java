@@ -37,8 +37,8 @@ public class AppCliente {
 			9998
 		);
 		
-        //IVista vista = new AdministradorVistaUI();   
-        IVista vista = new AdministradorVistaConsola();   
+        IVista vista = new AdministradorVistaUI();   
+        //IVista vista = new AdministradorVistaConsola();   
         Controlador controlador = new Controlador();             
 
         controlador.setVista(vista);

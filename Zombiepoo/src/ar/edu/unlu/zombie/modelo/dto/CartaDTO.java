@@ -31,6 +31,10 @@ public class CartaDTO implements Serializable {
 		return numero;
 	}
 	
+	public String NombreImagenDeLaCarta() {
+		return (this.tipo == TipoCarta.COMODIN) ? ("Zombi") : (this.numero.toString() + this.tipo.toString());	
+	};
+
 	@Override
 	public String toString() {
 		if(tipo != TipoCarta.COMODIN) {
