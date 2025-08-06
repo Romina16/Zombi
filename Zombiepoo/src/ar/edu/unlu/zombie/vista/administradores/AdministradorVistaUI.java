@@ -140,16 +140,6 @@ public class AdministradorVistaUI implements IVista {
 	}
 	
 	@Override
-	public void mostrarMensajeExito(String mensaje) {
-		JOptionPane.showMessageDialog(
-				framePrincipal,
-				mensaje,
-				"Error",
-				JOptionPane.INFORMATION_MESSAGE
-	    );
-	}
-
-	@Override
 	public void mostrarMensajeError(String mensaje) {
 		JOptionPane.showMessageDialog(
 				framePrincipal,
@@ -199,6 +189,12 @@ public class AdministradorVistaUI implements IVista {
 	public List<CartaDTO> obtenerUltimasDosCartasMazoParejas() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void volverAlMenuPrincipal() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

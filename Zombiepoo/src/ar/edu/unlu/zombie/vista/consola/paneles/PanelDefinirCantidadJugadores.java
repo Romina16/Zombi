@@ -62,12 +62,7 @@ public class PanelDefinirCantidadJugadores implements IPanelConsola {
         frame.clearInput();
         frame.setEditabledInput(true);
     }
-	
-	@Override
-	public void mostrarMensajeExito(String mensaje) {
-		frame.appendLine(mensaje);		
-	}
-	
+		
 	@Override
 	public void mostrarMensajeError(String mensaje) {
 		frame.appendLine(mensaje);

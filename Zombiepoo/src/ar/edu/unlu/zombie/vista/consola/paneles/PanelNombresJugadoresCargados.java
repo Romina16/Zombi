@@ -50,11 +50,6 @@ public class PanelNombresJugadoresCargados implements IPanelConsola {
         frame.clearInput();
         frame.setEditabledInput(false);
     }
-	
-	@Override
-	public void mostrarMensajeExito(String mensaje) {
-		frame.appendLine(mensaje);		
-	}
 
 	@Override
 	public void mostrarMensajeError(String mensaje) {

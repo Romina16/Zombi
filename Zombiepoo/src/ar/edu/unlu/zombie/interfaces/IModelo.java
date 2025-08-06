@@ -23,4 +23,5 @@ public interface IModelo extends Remote {
 	int obtenerCantidadCartasJugadoresDerecha() throws RemoteException;
 	Mensaje tomarCartaJugadorDerecha(int indiceCartaJugadorDerecha) throws RemoteException;
 	String obtenerNombreJugadorPerdedor() throws RemoteException;
+	Mensaje finalizarJuego() throws RemoteException;
 }

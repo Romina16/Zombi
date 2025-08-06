@@ -294,7 +294,7 @@ public class Controlador implements IControlador, IControladorRemoto {
 	@Override
 	public void mostrarPanelFinalRonda() {
 		vista.mostrarPanelFinalRonda();
-	}
+	}	
 	
 	@Override
 	public String obtenerNombreJugadorPerdedor() {
@@ -303,6 +303,24 @@ public class Controlador implements IControlador, IControladorRemoto {
 		} catch(RemoteException e) {
 			vista.mostrarMensajeError("Error: Remote Exception " + e.getMessage());
 			return "";
+		}
+	}
+	
+	@Override
+	public void volverAlMenuPrincipal() {
+		try {
+			
+			Mensaje mensaje = modelo.finalizarJuego();
+			
+			EventoJugador eventoJugador = mensaje.get("EventoJugador", EventoJugador.class);
+			
+			if(eventoJugador == EventoJugador.MOSTRAR_PANTALLA_ESPERA_JUGADORES) {
+				vista.mostrarPanelEsperaJugadores();
+				return;
+			}
+			
+		} catch(RemoteException e) {
+			vista.mostrarMensajeError("Error: Remote Exception " + e.getMessage());
 		}
 	}
 	
@@ -323,6 +341,9 @@ public class Controlador implements IControlador, IControladorRemoto {
 				break;
 			case FINAL_RONDA:
 				mostrarPanelFinalRonda();
+				break;
+			case MOSTRAR_PANTALLA_MENU_PRINCIPAL:
+				mostrarPanelMenuPrincipal();
 				break;
 			default:
 				break;				

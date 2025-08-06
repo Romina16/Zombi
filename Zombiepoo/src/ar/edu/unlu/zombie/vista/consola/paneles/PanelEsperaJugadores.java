@@ -38,11 +38,6 @@ public class PanelEsperaJugadores implements IPanelConsola {
     }
 	
 	@Override
-	public void mostrarMensajeExito(String mensaje) {
-		frame.appendLine(mensaje);		
-	}
-
-	@Override
 	public void mostrarMensajeError(String mensaje) {
 		frame.appendLine(mensaje);
 	}

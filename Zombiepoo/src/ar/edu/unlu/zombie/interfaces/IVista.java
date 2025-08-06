@@ -28,6 +28,6 @@ public interface IVista {
 	void obtenerDatosCargaRondaJugadorTurno(String indiceCartaJugadorDerecha);
 	void mostrarPanelFinalRonda();
 	String obtenerNombreJugadorPerdedor();
-	void mostrarMensajeExito(String mensaje);
+	void volverAlMenuPrincipal();
 	void mostrarMensajeError(String mensaje);
 }

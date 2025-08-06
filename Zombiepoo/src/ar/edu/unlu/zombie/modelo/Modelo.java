@@ -315,5 +315,30 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
 
 	    return ultimoJugadorActivo.getNombre();
 	}
+	
+	private void resetearJuego() {
+		this.cantidadJugadoresActuales = -1;
+		this.jugadores.clear();
+		this.mazoParejas.clear();
+		this.posicionJugadorActual = 0;
+		this.jugadoresEnEspera = 0;
+	}
+	
+	public Mensaje finalizarJuego() throws RemoteException {
+		if((jugadoresEnEspera ++) < cantidadJugadoresActuales) {
+			jugadoresEnEspera ++;
+			return new Mensaje
+					.Builder()
+				    .put("EventoJugador", EventoJugador.MOSTRAR_PANTALLA_ESPERA_JUGADORES)
+				    .build();
+		}
+		
+		resetearJuego();
+		this.notificarObservadores(EventoGeneral.MOSTRAR_PANTALLA_MENU_PRINCIPAL);
+		return new Mensaje
+				.Builder()
+			    .put("EventoJugador", EventoJugador.EVENTO_GLOBAL)
+			    .build();
+	}
 
 }

@@ -26,4 +26,5 @@ public interface IControlador {
 	void obtenerDatosCargaRondaJugadorTurno(String indiceCartaJugadorDerecha);	
 	void mostrarPanelFinalRonda();
 	String obtenerNombreJugadorPerdedor();
+	void volverAlMenuPrincipal();
 }

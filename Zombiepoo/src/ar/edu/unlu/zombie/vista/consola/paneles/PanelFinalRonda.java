@@ -24,7 +24,7 @@ public class PanelFinalRonda implements IPanelConsola {
 		
     private void inicializarAccionEnter() {
         frame.setEnterAction(e -> {  
-            administradorVista.mostrarPanelMenuPrincipal();
+            administradorVista.volverAlMenuPrincipal();
         });
     }
         
@@ -47,11 +47,6 @@ public class PanelFinalRonda implements IPanelConsola {
         frame.setEditabledInput(false);
     }
 	
-	@Override
-	public void mostrarMensajeExito(String mensaje) {
-		frame.appendLine(mensaje);		
-	}
-
 	@Override
 	public void mostrarMensajeError(String mensaje) {
 		frame.appendLine(mensaje);

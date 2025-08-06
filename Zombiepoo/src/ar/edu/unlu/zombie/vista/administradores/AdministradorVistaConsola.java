@@ -190,15 +190,16 @@ public class AdministradorVistaConsola implements IVista {
 	public String obtenerNombreJugadorPerdedor() {
 		return controlador.obtenerNombreJugadorPerdedor();
 	}
-		
+	
 	@Override
-	public void mostrarMensajeExito(String mensaje) {
-		panelActual.mostrarMensajeExito(mensaje);
+	public void volverAlMenuPrincipal() {
+		controlador.volverAlMenuPrincipal();
 	}
-
+		
 	@Override
 	public void mostrarMensajeError(String mensaje) {
 		panelActual.mostrarMensajeError(mensaje);
+		panelActual.mostrarPanel();
 	}
 
 }
