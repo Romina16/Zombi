@@ -3,6 +3,7 @@ package ar.edu.unlu.zombie.vista.ui.paneles;
 import javax.swing.JPanel;
 
 import ar.edu.unlu.zombie.interfaces.IVista;
+import ar.edu.unlu.zombie.interfaces.IPanel;
 
 import javax.swing.JLabel;
 import javax.swing.BorderFactory;
@@ -22,11 +23,9 @@ public class JPanelMenuPrincipal extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private IVista administradorVista;
 
-public JPanelMenuPrincipal(IVista administradorVista) {
-		
+	public JPanelMenuPrincipal(IVista administradorVista) {
 		this.administradorVista = administradorVista;
-		setSize(900, 700);
-		this.inicializar();
+		inicializar();
 	}
 	
 	@Override
@@ -37,7 +36,9 @@ public JPanelMenuPrincipal(IVista administradorVista) {
 			g.drawImage(fondo.getImage(), 0, 0, getWidth(), getHeight(), this);
 	}
 	
-	private void inicializar() {			
+	private void inicializar() {	
+		
+		setSize(900, 700);
 	
 		JPanel panelMesa = new JPanel(); 
 		panelMesa.setLayout(new BorderLayout());

@@ -32,8 +32,8 @@ public class JPanelNombresJugadoresCargados extends JPanel {
 	public JPanelNombresJugadoresCargados(IVista administradorVista) {
 		this.administradorVista = administradorVista;
 		setSize(900, 700);
-		this.obtenerDatosPanel();
-		//this.inicializar();
+		//this.obtenerDatosPanel();
+		this.inicializar();
 	}
 	
 	@Override
@@ -44,7 +44,7 @@ public class JPanelNombresJugadoresCargados extends JPanel {
 			g.drawImage(fondo.getImage(), 0, 0, getWidth(), getHeight(), this);
 	}
 	
-	public void mostrarPanel() {
+	/*public void mostrarPanel() {
 	    obtenerDatosPanel();    // carga los datos desde el controlador a través de la vista
 	    actualizarVista();      // pinta esos datos en el JPanel
 	}
@@ -90,23 +90,14 @@ public class JPanelNombresJugadoresCargados extends JPanel {
         revalidate();
         repaint();
 	}
-	
+	*/
 	private void obtenerDatosPanel() {
     	nombresJugadores = administradorVista.obtenerNombresJugadores();
     }
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	private void inicializar() {
-		
+		obtenerDatosPanel();
 		JLabel LblTitulo = new JLabel("Jugadores cargados");
 		LblTitulo.setForeground(Color.GREEN.darker()); // Verde zombie
 		LblTitulo.setFont(new Font("Serif", Font.BOLD, 36)); // Fuente grande y negrita

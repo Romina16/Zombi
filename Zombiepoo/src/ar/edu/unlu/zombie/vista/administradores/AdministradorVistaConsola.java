@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import ar.edu.unlu.zombie.interfaces.IControlador;
-import ar.edu.unlu.zombie.interfaces.IPanelConsola;
+import ar.edu.unlu.zombie.interfaces.IPanel;
 import ar.edu.unlu.zombie.interfaces.IVista;
 import ar.edu.unlu.zombie.modelo.dto.CartaDTO;
 import ar.edu.unlu.zombie.vista.consola.JFramePrincipal;
@@ -23,7 +23,7 @@ public class AdministradorVistaConsola implements IVista {
 	private final Map<String, Object> panels = new LinkedHashMap<>();
 	private IControlador controlador;
 	private JFramePrincipal framePrincipal;
-	private IPanelConsola panelActual;
+	private IPanel panelActual;
 	private PanelMenuPrincipal panelMenuPrincipal;
 	private PanelDefinirCantidadJugadores panelDefinirCantidadJugadores;
 	private PanelEsperaJugadores panelEsperaJugadores;
@@ -58,7 +58,7 @@ public class AdministradorVistaConsola implements IVista {
 							        
 	}
 	
-	public IPanelConsola getPanelActual() {
+	public IPanel getPanelActual() {
 		return this.panelActual;
 	}
 		
@@ -67,7 +67,7 @@ public class AdministradorVistaConsola implements IVista {
     }
 
     public void showPanel(String nombre) {
-        IPanelConsola panel = (IPanelConsola) panels.get(nombre);
+        IPanel panel = (IPanel) panels.get(nombre);
         panelActual = panel;
         panel.mostrarPanel();
     }

@@ -1,6 +1,6 @@
 package ar.edu.unlu.zombie.interfaces;
 
-public interface IPanelConsola {
+public interface IPanel {
 	void mostrarPanel();
 	void mostrarMensajeError(String mensaje);
 }

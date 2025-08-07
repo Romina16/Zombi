@@ -21,14 +21,11 @@ public class JFramePrincipal extends JFrame {
         setContentPane(contenedor);       
 	}
 	
-    public void addPanel(String name, JPanel panel) {
-        contenedor.add(panel, name);
-    }
-
-    public void showPanel(String name) {
-        cardLayout.show(contenedor, name);
-        contenedor.revalidate();
-        contenedor.repaint();
+    public void showPanel(JPanel panel) {
+        this.getContentPane().removeAll();
+        this.getContentPane().add(panel);
+        this.revalidate();
+        this.repaint();
     }
 
     public void showFrame() {
