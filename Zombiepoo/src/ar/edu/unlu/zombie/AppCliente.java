@@ -28,13 +28,13 @@ public class AppCliente {
 			9998
 		);
 		
+		Controlador controlador = new Controlador();
         IVista vista = new AdministradorVistaUI();   
         //IVista vista = new AdministradorVistaConsola();   
-        Controlador controlador = new Controlador();             
-
-        controlador.setVista(vista);
+        
         vista.setControlador(controlador);
-
+        controlador.setVista(vista);
+ 
         Cliente c = new Cliente(
 			IP_CLIENTE, 
 			Integer.parseInt(portCliente), 

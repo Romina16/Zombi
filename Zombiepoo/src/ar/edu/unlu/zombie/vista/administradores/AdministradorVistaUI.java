@@ -6,21 +6,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import ar.edu.unlu.zombie.interfaces.IControlador;
+import ar.edu.unlu.zombie.interfaces.IPanel;
 import ar.edu.unlu.zombie.interfaces.IVista;
 import ar.edu.unlu.zombie.modelo.dto.CartaDTO;
-import ar.edu.unlu.zombie.vista.consola.paneles.PanelCargaNombreJugador;
-import ar.edu.unlu.zombie.vista.consola.paneles.PanelDefinirCantidadJugadores;
-import ar.edu.unlu.zombie.vista.consola.paneles.PanelEsperaJugadores;
-import ar.edu.unlu.zombie.vista.consola.paneles.PanelFinalRonda;
-import ar.edu.unlu.zombie.vista.consola.paneles.PanelMenuPrincipal;
-import ar.edu.unlu.zombie.vista.consola.paneles.PanelNombresJugadoresCargados;
-import ar.edu.unlu.zombie.vista.consola.paneles.PanelRondaJugadorObservador;
-import ar.edu.unlu.zombie.vista.consola.paneles.PanelRondaJugadorTurno;
 import ar.edu.unlu.zombie.vista.ui.JFramePrincipal;
-import ar.edu.unlu.zombie.vista.ui.paneles.JPanelCantidadJugadores;
+import ar.edu.unlu.zombie.vista.ui.paneles.JPanelDefinirCantidadJugadores;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelCargaNombreJugador;
-import ar.edu.unlu.zombie.vista.ui.paneles.JPanelEspera;
+import ar.edu.unlu.zombie.vista.ui.paneles.JPanelEsperaJugadores;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelMenuPrincipal;
+import ar.edu.unlu.zombie.vista.ui.paneles.JPanelNombresJugadoresCargados;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelRondaJugadorObservador;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelRondaJugadorTurno;
 
@@ -28,45 +22,31 @@ public class AdministradorVistaUI implements IVista {
 	
 	private IControlador controlador;
 	private JFramePrincipal framePrincipal;
-	private JPanelMenuPrincipal panelMenuPrincipal;
+	private IPanel panelActual;
+//	private JPanelMenuPrincipal panelMenuPrincipal;
 //	private JPanelDefinirCantidadJugadores panelDefinirCantidadJugadores;
-	private JPanelEsperaJugadores panelEsperaJugadores;
-	private JPanelCargaNombreJugador panelCargaNombreJugador;
-	private JPanelNombresJugadoresCargados panelNombresJugadoresCargados;
-	private JPanelRondaJugadorTurno panelRondaJugadorTurno;
-	private JPanelRondaJugadorObservador panelRondaJugadorObservador;
-	private JPanelFinalRonda panelFinalRonda;
+//	private JPanelEsperaJugadores panelEsperaJugadores;
+//	private JPanelCargaNombreJugador panelCargaNombreJugador;
+//	private JPanelNombresJugadoresCargados panelNombresJugadoresCargados;
+//	private JPanelRondaJugadorTurno panelRondaJugadorTurno;
+//	private JPanelRondaJugadorObservador panelRondaJugadorObservador;
+	//private JPanelFinalRonda panelFinalRonda;
 	
 	public AdministradorVistaUI() {
 		this.framePrincipal = new JFramePrincipal();
-		
-		panelMenuPrincipal = new JPanelMenuPrincipal(this);
-//		panelDefinirCantidadJugadores = new JPanelDefinirCantidadJugadores(this);
-		panelEsperaJugadores = new JPanelEsperaJugadores(this);
-		panelCargaNombreJugador = new JPanelCargaNombreJugador(this);
-		panelNombresJugadoresCargados = new JPanelNombresJugadoresCargados(this);
-		panelRondaJugadorTurno = new JPanelRondaJugadorTurno(this);
-		panelRondaJugadorObservador = new JPanelRondaJugadorObservador(this);	
-		panelFinalRonda = new JPanelFinalRonda(this);
-		
-		addPanel("Menu Principal", panelMenuPrincipal);
-		addPanel("Definir Cantidad de Jugadores", panelDefinirCantidadJugadores);
-		addPanel("Espera Jugadores", panelEsperaJugadores);
-		addPanel("Carga Nombre de Jugador", panelCargaNombreJugador);
-		addPanel("Nombres Jugadores Cargados", panelNombresJugadoresCargados);
-		addPanel("Jugador Turno", panelRondaJugadorTurno);
-		addPanel("Jugador Observador", panelRondaJugadorObservador);
-		addPanel("Final de Ronda", panelFinalRonda);
-		
 		showFrame();
 	}
 	
-    public void addPanel(String nombre, JPanel panel) {
-    	framePrincipal.addPanel(nombre, panel);
-    }
-
-    public void showPanel(String nombre) {
-        framePrincipal.showPanel(nombre);
+	public IPanel getPanelActual() {
+		return this.panelActual;
+	}
+	
+    public void showPanel(JPanel panel) {
+        if (panel instanceof IPanel) {
+            this.panelActual = (IPanel) panel;
+            this.panelActual.mostrarPanel();
+        }
+        framePrincipal.setPanel(panel);
     }
 
     public void showFrame() {
@@ -75,7 +55,7 @@ public class AdministradorVistaUI implements IVista {
                         
     @Override
 	public void setControlador(IControlador controlador) {
-		this.controlador = controlador;		
+		this.controlador = controlador;	
 	}	
 	
 	@Override
@@ -90,7 +70,7 @@ public class AdministradorVistaUI implements IVista {
 		
 	@Override
 	public void mostrarPanelMenuPrincipal() {
-		showPanel("Menu Principal");
+		showPanel(new JPanelMenuPrincipal(this));
 	}
 	
 	@Override
@@ -105,7 +85,7 @@ public class AdministradorVistaUI implements IVista {
 	
 	@Override
 	public void mostrarPanelDefinirCantidadJugadores() {
-		showPanel("Definir Cantidad de Jugadores");
+		showPanel(new JPanelDefinirCantidadJugadores(this));
 	}
 	
 	@Override
@@ -115,12 +95,12 @@ public class AdministradorVistaUI implements IVista {
 	
 	@Override
 	public void mostrarPanelEsperaJugadores() {
-		showPanel("Espera Jugadores");
+		showPanel(new JPanelEsperaJugadores(this));
 	}
 	
 	@Override
 	public void mostrarPanelCargaNombreJugador() {
-		showPanel("Carga Nombre de Jugador");
+		showPanel(new JPanelCargaNombreJugador(this));
 	}
 	
 	@Override
@@ -130,7 +110,7 @@ public class AdministradorVistaUI implements IVista {
 		
 	@Override
 	public void mostrarPanelNombresJugadoresCargados() {
-		showPanel("Nombres Jugadores Cargados");
+		showPanel(new JPanelNombresJugadoresCargados(this));
 	}
 	
 	@Override
@@ -145,12 +125,12 @@ public class AdministradorVistaUI implements IVista {
 			
 	@Override
 	public void mostrarPanelRondaJugadorTurno() {
-		showPanel("Jugador Turno");
+		showPanel(new JPanelRondaJugadorTurno(this));
 	}
 	
 	@Override
 	public void mostrarPanelRondaJugadorObservador() {
-		showPanel("Jugador Observador");
+		showPanel(new JPanelRondaJugadorObservador(this));
 	}
 	
 	@Override
@@ -180,7 +160,7 @@ public class AdministradorVistaUI implements IVista {
 	
 	@Override
 	public void mostrarPanelFinalRonda() {
-		showPanel("Final de Ronda");
+		//showPanel(new JPanelFinalRonda(this));
 	}
 	
 	@Override
@@ -192,10 +172,15 @@ public class AdministradorVistaUI implements IVista {
 	public void volverAlMenuPrincipal() {
 		controlador.volverAlMenuPrincipal();
 	}
-		
+			
 	@Override
 	public void mostrarMensajeError(String mensaje) {
-
+		JOptionPane.showMessageDialog(
+				framePrincipal, 
+				mensaje, 
+				"Error",	
+				JOptionPane.ERROR_MESSAGE
+		);
 	}
 
 }

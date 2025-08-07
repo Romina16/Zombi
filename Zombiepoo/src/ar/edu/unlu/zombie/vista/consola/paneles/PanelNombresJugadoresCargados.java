@@ -2,11 +2,11 @@ package ar.edu.unlu.zombie.vista.consola.paneles;
 
 import java.util.List;
 
-import ar.edu.unlu.zombie.interfaces.IPanelConsola;
+import ar.edu.unlu.zombie.interfaces.IPanel;
 import ar.edu.unlu.zombie.interfaces.IVista;
 import ar.edu.unlu.zombie.vista.consola.JFramePrincipal;
 
-public class PanelNombresJugadoresCargados implements IPanelConsola {
+public class PanelNombresJugadoresCargados implements IPanel {
 	
 	private IVista administradorVista;
 	private JFramePrincipal frame;
