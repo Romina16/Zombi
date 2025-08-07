@@ -21,7 +21,7 @@ public class JFramePrincipal extends JFrame {
         setContentPane(contenedor);       
 	}
 	
-    public void setPanel(JPanel panel) {
+    public void showPanel(JPanel panel) {
         this.getContentPane().removeAll();
         this.getContentPane().add(panel);
         this.revalidate();

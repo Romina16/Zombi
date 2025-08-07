@@ -6,13 +6,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import ar.edu.unlu.zombie.interfaces.IControlador;
-import ar.edu.unlu.zombie.interfaces.IPanel;
 import ar.edu.unlu.zombie.interfaces.IVista;
 import ar.edu.unlu.zombie.modelo.dto.CartaDTO;
 import ar.edu.unlu.zombie.vista.ui.JFramePrincipal;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelDefinirCantidadJugadores;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelCargaNombreJugador;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelEsperaJugadores;
+import ar.edu.unlu.zombie.vista.ui.paneles.JPanelFinalRonda;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelMenuPrincipal;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelNombresJugadoresCargados;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelRondaJugadorObservador;
@@ -22,31 +22,14 @@ public class AdministradorVistaUI implements IVista {
 	
 	private IControlador controlador;
 	private JFramePrincipal framePrincipal;
-	private IPanel panelActual;
-//	private JPanelMenuPrincipal panelMenuPrincipal;
-//	private JPanelDefinirCantidadJugadores panelDefinirCantidadJugadores;
-//	private JPanelEsperaJugadores panelEsperaJugadores;
-//	private JPanelCargaNombreJugador panelCargaNombreJugador;
-//	private JPanelNombresJugadoresCargados panelNombresJugadoresCargados;
-//	private JPanelRondaJugadorTurno panelRondaJugadorTurno;
-//	private JPanelRondaJugadorObservador panelRondaJugadorObservador;
-	//private JPanelFinalRonda panelFinalRonda;
 	
 	public AdministradorVistaUI() {
 		this.framePrincipal = new JFramePrincipal();
 		showFrame();
 	}
 	
-	public IPanel getPanelActual() {
-		return this.panelActual;
-	}
-	
     public void showPanel(JPanel panel) {
-        if (panel instanceof IPanel) {
-            this.panelActual = (IPanel) panel;
-            this.panelActual.mostrarPanel();
-        }
-        framePrincipal.setPanel(panel);
+        framePrincipal.showPanel(panel);
     }
 
     public void showFrame() {
@@ -160,7 +143,7 @@ public class AdministradorVistaUI implements IVista {
 	
 	@Override
 	public void mostrarPanelFinalRonda() {
-		//showPanel(new JPanelFinalRonda(this));
+		showPanel(new JPanelFinalRonda(this));
 	}
 	
 	@Override
