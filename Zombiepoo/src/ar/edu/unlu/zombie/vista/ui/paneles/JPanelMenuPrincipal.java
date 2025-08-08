@@ -44,6 +44,17 @@ public class JPanelMenuPrincipal extends JPanel {
 		panelMesa.setLayout(new BorderLayout());
 		panelMesa.setOpaque(false);
 		
+		ImageIcon iconoLogo = new ImageIcon(getClass().getResource("/ar/edu/unlu/zombie/vista/ui/recursos/imagenes/zmb.png"));
+
+		// Si querés escalar la imagen, podés hacerlo así:
+		Image imagenEscalada1 = iconoLogo.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+		ImageIcon iconoEscalado1 = new ImageIcon(imagenEscalada1);
+		
+		
+		JLabel LblTitulo1 = new JLabel(iconoEscalado1);
+		LblTitulo1.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		
 		ImageIcon iconoTitulo = new ImageIcon(getClass().getResource("/ar/edu/unlu/zombie/vista/ui/recursos/imagenes/zombie.png"));
 
 		// Si querés escalar la imagen, podés hacerlo así:
@@ -67,6 +78,16 @@ public class JPanelMenuPrincipal extends JPanel {
 		});
 		
 		btnInicioJuego.setAlignmentX(Component.CENTER_ALIGNMENT);
+		//**
+		JButton btnContinuar = crearBotonEstilizado("Continuar");
+		btnContinuar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) { //evento salir
+				administradorVista.continuarPartidaPersistida();
+			}
+		});
+		
+		btnContinuar.setAlignmentX(Component.CENTER_ALIGNMENT);
+		//**
 		
 		JButton btnSalir = crearBotonEstilizado("Salir");
 		btnSalir.addActionListener(new ActionListener() {
@@ -81,9 +102,13 @@ public class JPanelMenuPrincipal extends JPanel {
 		ListadoMenu.setOpaque(false);  // Hace que no se tape el fondo
 		ListadoMenu.setLayout(new BoxLayout(ListadoMenu, BoxLayout.Y_AXIS));
 		
+		ListadoMenu.add(LblTitulo1);
+		ListadoMenu.add(Box.createVerticalStrut(20));
 		ListadoMenu.add(LblTitulo);
 		ListadoMenu.add(Box.createVerticalStrut(20));
 		ListadoMenu.add(btnInicioJuego);
+		ListadoMenu.add(Box.createVerticalStrut(20));
+		ListadoMenu.add(btnContinuar);
 		ListadoMenu.add(Box.createVerticalStrut(20));
 		ListadoMenu.add(btnSalir);
 				
@@ -91,7 +116,6 @@ public class JPanelMenuPrincipal extends JPanel {
 		JPanel Menu = new JPanel(new GridBagLayout());
 		Menu.setOpaque(false);
 		Menu.add(ListadoMenu);
-		//panelMesa.add(LblTitulo, BorderLayout.NORTH);
 		panelMesa.add(Menu, BorderLayout.CENTER);
 		
 		this.setLayout(new BorderLayout());
@@ -103,24 +127,24 @@ public class JPanelMenuPrincipal extends JPanel {
 	private JButton crearBotonEstilizado(String texto) {
 	    JButton boton = new JButton(texto);
 
-	    // Estética básica
+	    
 	    boton.setBackground(new Color(68, 85, 90)); // Verde apagado
 	    boton.setForeground(Color.WHITE);
 	    boton.setFont(new Font("Arial", Font.BOLD, 18));
 
-	    // Bordes redondeados y sin borde visible
+	    
 	    boton.setFocusPainted(false);
 	    boton.setBorderPainted(false);
 	    boton.setContentAreaFilled(false);
 	    boton.setOpaque(true);
 	    boton.setBorder(BorderFactory.createLineBorder(new Color(40, 50, 55), 2));
 	    
-	    // Redondeo visual (puede mejorarse con custom painting)
+	    
 	    boton.setPreferredSize(new Dimension(200, 40));
 	    boton.setMaximumSize(new Dimension(200, 40));
 	    boton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-	    // Cambiar cursor
+	    
 	    boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
 	    return boton;

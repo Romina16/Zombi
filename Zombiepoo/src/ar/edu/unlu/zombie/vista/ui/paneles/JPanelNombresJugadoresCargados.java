@@ -44,53 +44,6 @@ public class JPanelNombresJugadoresCargados extends JPanel {
 			g.drawImage(fondo.getImage(), 0, 0, getWidth(), getHeight(), this);
 	}
 	
-	/*public void mostrarPanel() {
-	    obtenerDatosPanel();    // carga los datos desde el controlador a través de la vista
-	    actualizarVista();      // pinta esos datos en el JPanel
-	}
-	
-	private void actualizarVista() {
-		// Título
-        JLabel lblTitulo = new JLabel("Jugadores Cargados");
-        lblTitulo.setFont(new Font("Serif", Font.BOLD, 24));
-        lblTitulo.setForeground(Color.GREEN.darker());
-        lblTitulo.setAlignmentX(CENTER_ALIGNMENT);
-        add(Box.createRigidArea(new Dimension(0, 20)));
-        add(lblTitulo);
-        add(Box.createRigidArea(new Dimension(0, 20)));
-
-        // Jugadores
-        if (nombresJugadores != null && !nombresJugadores.isEmpty()) {
-            for (String nombre : nombresJugadores) {
-                JLabel lblJugador = new JLabel("Jugador: " + nombre);
-                lblJugador.setFont(new Font("Serif", Font.PLAIN, 18));
-                lblJugador.setForeground(Color.WHITE);
-                lblJugador.setAlignmentX(CENTER_ALIGNMENT);
-                add(lblJugador);
-                add(Box.createRigidArea(new Dimension(0, 10)));
-            }
-        } else {
-            JLabel lblSinJugadores = new JLabel("No hay jugadores cargados.");
-            lblSinJugadores.setForeground(Color.RED);
-            lblSinJugadores.setFont(new Font("Serif", Font.ITALIC, 16));
-            lblSinJugadores.setAlignmentX(CENTER_ALIGNMENT);
-            add(lblSinJugadores);
-        }
-
-      //boton Continuar
-      		JButton btnContinuar = crearBotonEstilizado("Continuar");
-      		//JButton Continuar = new JButton("Continuar");
-      		btnContinuar.addActionListener(new ActionListener() {
-      			public void actionPerformed(ActionEvent e) {
-      				 administradorVista.iniciarRonda();
-      			}
-      		});
-
-        // Refrescamos el panel
-        revalidate();
-        repaint();
-	}
-	*/
 	private void obtenerDatosPanel() {
     	nombresJugadores = administradorVista.obtenerNombresJugadores();
     }

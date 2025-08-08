@@ -9,6 +9,7 @@ import ar.edu.unlu.zombie.modelo.dto.CartaDTO;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -134,6 +135,22 @@ public class JPanelRondaJugadorTurno extends JPanel {
 
 		add(panelDerecha, BorderLayout.EAST);
 		
+		// Pausa
+	    JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.CENTER));
+	    panelInferior.setOpaque(false);
+
+	    //JButton btnPausa = new JButton("Pausa");
+	    JButton btnPausa = crearBotonEstilizado("Pausa");
+	    btnPausa.setPreferredSize(new Dimension(120, 40));
+	    btnPausa.setFont(new Font("SansSerif", Font.BOLD, 16));
+	    btnPausa.addActionListener(e -> {
+	    	administradorVista.persistirPartida(); 
+	    });
+
+	    panelInferior.add(btnPausa);
+	    
+	    add(panelInferior, BorderLayout.SOUTH);
+		
 		revalidate();
 		repaint();
 	}
@@ -222,4 +239,32 @@ public class JPanelRondaJugadorTurno extends JPanel {
 	private String rutaReverso() {
 		return "/ar/edu/unlu/zombie/vista/ui/recursos/imagenes/cartas/cartasTodas/Reverso.png";
 	}
+	
+	//Estilo de los botones
+		private JButton crearBotonEstilizado(String texto) {
+		    JButton boton = new JButton(texto);
+
+		    
+		    boton.setBackground(new Color(68, 85, 90)); // Verde apagado
+		    boton.setForeground(Color.WHITE);
+		    boton.setFont(new Font("Arial", Font.BOLD, 18));
+
+		    
+		    boton.setFocusPainted(false);
+		    boton.setBorderPainted(false);
+		    boton.setContentAreaFilled(false);
+		    boton.setOpaque(true);
+		    boton.setBorder(BorderFactory.createLineBorder(new Color(40, 50, 55), 2));
+		    
+		    
+		    boton.setPreferredSize(new Dimension(200, 40));
+		    boton.setMaximumSize(new Dimension(200, 40));
+		    boton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+		    
+		    boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+		    return boton;
+		}
+	
 }
