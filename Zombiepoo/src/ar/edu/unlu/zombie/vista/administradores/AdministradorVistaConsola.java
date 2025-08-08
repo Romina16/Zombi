@@ -3,17 +3,21 @@ package ar.edu.unlu.zombie.vista.administradores;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import ar.edu.unlu.zombie.interfaces.IControlador;
 import ar.edu.unlu.zombie.interfaces.IPanel;
 import ar.edu.unlu.zombie.interfaces.IVista;
 import ar.edu.unlu.zombie.modelo.dto.CartaDTO;
+import ar.edu.unlu.zombie.modelo.dto.JugadorDTO;
 import ar.edu.unlu.zombie.vista.consola.JFramePrincipal;
 import ar.edu.unlu.zombie.vista.consola.paneles.PanelDefinirCantidadJugadores;
 import ar.edu.unlu.zombie.vista.consola.paneles.PanelCargaNombreJugador;
 import ar.edu.unlu.zombie.vista.consola.paneles.PanelEsperaJugadores;
 import ar.edu.unlu.zombie.vista.consola.paneles.PanelFinalRonda;
 import ar.edu.unlu.zombie.vista.consola.paneles.PanelNombresJugadoresCargados;
+import ar.edu.unlu.zombie.vista.consola.paneles.PanelNombresJugadoresPartidaPersistida;
+import ar.edu.unlu.zombie.vista.consola.paneles.PanelPartidaPersistida;
 import ar.edu.unlu.zombie.vista.consola.paneles.PanelMenuPrincipal;
 import ar.edu.unlu.zombie.vista.consola.paneles.PanelRondaJugadorObservador;
 import ar.edu.unlu.zombie.vista.consola.paneles.PanelRondaJugadorTurno;
@@ -32,6 +36,8 @@ public class AdministradorVistaConsola implements IVista {
 	private PanelRondaJugadorTurno panelRondaJugadorTurno;
 	private PanelRondaJugadorObservador panelRondaJugadorObservador;
 	private PanelFinalRonda panelFinalRonda;
+	private PanelPartidaPersistida panelPartidaPersistida;
+	private PanelNombresJugadoresPartidaPersistida panelNombresJugadoresPartidaPersistida;
 	
 	public AdministradorVistaConsola() {
 		this.framePrincipal = new JFramePrincipal();
@@ -44,6 +50,8 @@ public class AdministradorVistaConsola implements IVista {
 		panelRondaJugadorTurno = new PanelRondaJugadorTurno(this, framePrincipal);
 		panelRondaJugadorObservador = new PanelRondaJugadorObservador(this, framePrincipal);	
 		panelFinalRonda = new PanelFinalRonda(this, framePrincipal);
+		panelPartidaPersistida = new PanelPartidaPersistida(this, framePrincipal);
+		panelNombresJugadoresPartidaPersistida = new PanelNombresJugadoresPartidaPersistida(this, framePrincipal);
 		
 		addPanel("Menu Principal", panelMenuPrincipal);
 		addPanel("Definir Cantidad de Jugadores", panelDefinirCantidadJugadores);
@@ -53,7 +61,9 @@ public class AdministradorVistaConsola implements IVista {
 		addPanel("Jugador Turno", panelRondaJugadorTurno);
 		addPanel("Jugador Observador", panelRondaJugadorObservador);
 		addPanel("Final de Ronda", panelFinalRonda);
-						
+		addPanel("Partida Persistida", panelPartidaPersistida);				
+		addPanel("Nombres Jugadores Partida Persistida", panelNombresJugadoresPartidaPersistida);		
+		
 		showFrame();
 							        
 	}
@@ -97,8 +107,8 @@ public class AdministradorVistaConsola implements IVista {
 	}
 	
 	@Override
-	public void mostrarPanelIniciarJuego() {
-		controlador.mostrarPanelIniciarJuego();
+	public void iniciarJuego() {
+		controlador.iniciarJuego();
 	}
 	
 	@Override
@@ -195,7 +205,46 @@ public class AdministradorVistaConsola implements IVista {
 	public void volverAlMenuPrincipal() {
 		controlador.volverAlMenuPrincipal();
 	}
+	
+	/*
+	 * SERIALIZACION
+	 */
+	
+	@Override
+	public void persistirPartida() {
+		controlador.persistirPartida();
+	}
+	
+	@Override
+	public void mostrarPanelPartidaPersistida() {
+		showPanel("Partida Persistida");
+	}
+	
+	@Override
+	public Boolean hayPartidaPersistida() {
+		return controlador.hayPartidaPersistida();
+	}
+	
+	@Override
+	public void continuarPartidaPersistida() {
+		controlador.continuarPartidaPersistida();
+	}
+	
+	@Override
+	public void mostrarPanelNombresJugadoresPartidaPersistida() {
+		showPanel("Nombres Jugadores Partida Persistida");
+	}
 		
+	@Override
+	public List<JugadorDTO> obtenerJugadoresPartidaPersistida() {
+		return controlador.obtenerJugadoresPartidaPersistida();
+	}
+	
+	@Override
+	public void obtenerDatosCargaJugadorPartidaPersistida(UUID id) {
+		controlador.obtenerDatosCargaJugadorPartidaPersistida(id);
+	}
+	
 	@Override
 	public void mostrarMensajeError(String mensaje) {
 		panelActual.mostrarMensajeError(mensaje);

@@ -45,6 +45,9 @@ public class PanelRondaJugadorTurno implements IPanel {
             	try {
             		
             		int opcion = Integer.parseInt(input);
+            		if(opcion == 0) {
+            			administradorVista.persistirPartida();
+            		}
             		if((opcion >= 1) && (opcion <= cantidadCartasJugadorDerecha)) {
             			administradorVista.obtenerDatosCargaRondaJugadorTurno(input);
             		} else {
@@ -63,7 +66,7 @@ public class PanelRondaJugadorTurno implements IPanel {
     }
         
     private void obtenerPanel() {
-    	frame.appendLine("=== TURNO JUGADOR ===");
+    	frame.appendLine("=== TURNO JUGADOR === (Ingrese 0 para pausar la partida)");
         frame.appendLine("");
         frame.appendLine("Turno del jugador: " + nombreJugadorActual);
         frame.appendLine("");

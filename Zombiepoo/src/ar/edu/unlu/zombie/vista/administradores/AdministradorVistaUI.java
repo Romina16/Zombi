@@ -1,6 +1,7 @@
 package ar.edu.unlu.zombie.vista.administradores;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -8,6 +9,7 @@ import javax.swing.JPanel;
 import ar.edu.unlu.zombie.interfaces.IControlador;
 import ar.edu.unlu.zombie.interfaces.IVista;
 import ar.edu.unlu.zombie.modelo.dto.CartaDTO;
+import ar.edu.unlu.zombie.modelo.dto.JugadorDTO;
 import ar.edu.unlu.zombie.vista.ui.JFramePrincipal;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelDefinirCantidadJugadores;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelCargaNombreJugador;
@@ -15,6 +17,8 @@ import ar.edu.unlu.zombie.vista.ui.paneles.JPanelEsperaJugadores;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelFinalRonda;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelMenuPrincipal;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelNombresJugadoresCargados;
+import ar.edu.unlu.zombie.vista.ui.paneles.JPanelNombresJugadoresPartidaPersistida;
+import ar.edu.unlu.zombie.vista.ui.paneles.JPanelPartidaPersistida;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelRondaJugadorObservador;
 import ar.edu.unlu.zombie.vista.ui.paneles.JPanelRondaJugadorTurno;
 
@@ -57,8 +61,8 @@ public class AdministradorVistaUI implements IVista {
 	}
 	
 	@Override
-	public void mostrarPanelIniciarJuego() {
-		controlador.mostrarPanelIniciarJuego();
+	public void iniciarJuego() {
+		controlador.iniciarJuego();
 	}
 	
 	@Override
@@ -154,6 +158,45 @@ public class AdministradorVistaUI implements IVista {
 	@Override
 	public void volverAlMenuPrincipal() {
 		controlador.volverAlMenuPrincipal();
+	}
+	
+	/*
+	 * SERIALIZACION
+	 */
+	
+	@Override
+	public void persistirPartida() {
+		controlador.persistirPartida();
+	}
+	
+	@Override
+	public void mostrarPanelPartidaPersistida() {
+		showPanel(new JPanelPartidaPersistida(this));
+	}
+	
+	@Override
+	public Boolean hayPartidaPersistida() {
+		return controlador.hayPartidaPersistida();
+	}
+	
+	@Override
+	public void continuarPartidaPersistida() {
+		controlador.continuarPartidaPersistida();
+	}
+	
+	@Override
+	public void mostrarPanelNombresJugadoresPartidaPersistida() {
+		showPanel(new JPanelNombresJugadoresPartidaPersistida(this));
+	}
+		
+	@Override
+	public List<JugadorDTO> obtenerJugadoresPartidaPersistida() {
+		return controlador.obtenerJugadoresPartidaPersistida();
+	}
+	
+	@Override
+	public void obtenerDatosCargaJugadorPartidaPersistida(UUID id) {
+		controlador.obtenerDatosCargaJugadorPartidaPersistida(id);
 	}
 			
 	@Override

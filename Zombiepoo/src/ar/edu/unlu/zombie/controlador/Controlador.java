@@ -11,6 +11,7 @@ import ar.edu.unlu.zombie.interfaces.IControlador;
 import ar.edu.unlu.zombie.interfaces.IModelo;
 import ar.edu.unlu.zombie.interfaces.IVista;
 import ar.edu.unlu.zombie.modelo.dto.CartaDTO;
+import ar.edu.unlu.zombie.modelo.dto.JugadorDTO;
 import ar.edu.unlu.zombie.modelo.entidades.Carta;
 import ar.edu.unlu.zombie.modelo.enumerados.EventoGeneral;
 import ar.edu.unlu.zombie.modelo.enumerados.EventoJugador;
@@ -64,7 +65,7 @@ public class Controlador implements IControlador, IControladorRemoto {
 	}
 	
 	@Override
-	public void mostrarPanelIniciarJuego() {
+	public void iniciarJuego() {
 		try {
 			
 			if(!modelo.esCantidadJugadoresDefinida()) {
@@ -324,6 +325,97 @@ public class Controlador implements IControlador, IControladorRemoto {
 		}
 	}
 	
+	/*
+	 * SERIALIZACION
+	 */
+	
+	@Override
+    public void persistirPartida() {   	
+    	try {
+    		this.modelo.persistirPartida();
+		} catch(RemoteException e) {
+			vista.mostrarMensajeError("Error: Remote Exception " + e.getMessage());
+		}
+    }
+       
+	@Override
+	public void mostrarPanelPartidaPersistida() {
+		vista.mostrarPanelPartidaPersistida();
+	}
+	
+	@Override
+	public Boolean hayPartidaPersistida() {
+		try {
+    		return modelo.hayPartidaPersistida();
+		} catch(RemoteException e) {
+			vista.mostrarMensajeError("Error: Remote Exception " + e.getMessage());
+			return false;
+		}
+	}
+	
+	@Override
+	public void continuarPartidaPersistida() {
+		try {
+			
+			Mensaje mensaje = modelo.continuarPartidaPersistida();
+			
+			EventoJugador eventoJugador = mensaje.get("EventoJugador", EventoJugador.class);
+			
+			if(eventoJugador == EventoJugador.MOSTRAR_PANTALLA_ESPERA_JUGADORES) {
+				vista.mostrarPanelEsperaJugadores();
+				return;
+			}
+			
+		} catch(RemoteException e) {
+			vista.mostrarMensajeError("Error: Remote Exception " + e.getMessage());
+		}
+	}
+		
+	@Override
+	public void mostrarPanelNombresJugadoresPartidaPersistida() {
+		vista.mostrarPanelNombresJugadoresPartidaPersistida();
+	}
+	
+	@Override
+	public List<JugadorDTO> obtenerJugadoresPartidaPersistida() {
+		try {
+    		return modelo.obtenerJugadores()
+    				.stream()
+    				.map(jugador -> new JugadorDTO(
+    						jugador.getId(), 
+    						jugador.getNombre()))
+    				.toList();
+		} catch(RemoteException e) {
+			vista.mostrarMensajeError("Error: Remote Exception " + e.getMessage());
+			return List.of();
+		}
+	}
+	
+	@Override
+	public void obtenerDatosCargaJugadorPartidaPersistida(UUID id) {
+		try {
+			
+			if(id == null) {
+				vista.mostrarMensajeError("El identificador no puede estar vacio");
+				return;
+			}			
+						
+			setJugadorAsignado(id);
+			
+			Mensaje mensaje = modelo.reasignarJugadoresPartidaPersistida(id);
+
+			EventoJugador eventoJugador = mensaje.get("EventoJugador", EventoJugador.class);
+			
+			if(eventoJugador == EventoJugador.MOSTRAR_PANTALLA_ESPERA_JUGADORES) {
+				vista.mostrarPanelEsperaJugadores();
+				return;
+			}
+	
+		} catch(RemoteException e) {
+			vista.mostrarMensajeError("Error: Remote Exception " + e.getMessage());
+		}
+	}
+	
 	@Override
 	public void actualizar(IObservableRemoto arg0, Object objeto) throws RemoteException {
 		
@@ -344,6 +436,14 @@ public class Controlador implements IControlador, IControladorRemoto {
 				break;
 			case MOSTRAR_PANTALLA_MENU_PRINCIPAL:
 				mostrarPanelMenuPrincipal();
+				break;
+			case PARTIDA_PERSISTIDA:
+				mostrarPanelPartidaPersistida();
+				break;
+			case MOSTRAR_PANTALLA_NOMBRES_JUGADORES_PARTIDA_RECUPERADA:
+				if(this.jugadorAsignado == null) {
+					mostrarPanelNombresJugadoresPartidaPersistida();
+				}
 				break;
 			default:
 				break;				

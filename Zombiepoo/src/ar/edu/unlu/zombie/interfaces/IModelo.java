@@ -3,12 +3,17 @@ package ar.edu.unlu.zombie.interfaces;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.Stack;
 import java.util.UUID;
 
 import ar.edu.unlu.zombie.modelo.entidades.Carta;
+import ar.edu.unlu.zombie.modelo.entidades.Jugador;
 import ar.edu.unlu.zombie.recursos.Mensaje;
 
 public interface IModelo extends Remote {
+	List<Jugador> obtenerJugadores() throws RemoteException;
+	int obtenerPosicionJugadorActual() throws RemoteException;
+	Stack<Carta> obtenerMazoParejas() throws RemoteException;
 	int obtenerCantidadMinimaJugadores() throws RemoteException;
 	int obtenerCantidadMaximaJugadores() throws RemoteException;
 	Boolean esCantidadJugadoresDefinida() throws RemoteException;
@@ -24,4 +29,9 @@ public interface IModelo extends Remote {
 	Mensaje tomarCartaJugadorDerecha(int indiceCartaJugadorDerecha) throws RemoteException;
 	String obtenerNombreJugadorPerdedor() throws RemoteException;
 	Mensaje finalizarJuego() throws RemoteException;
+	Boolean hayPartidaPersistida() throws RemoteException;
+	void persistirPartida() throws RemoteException;
+	Mensaje continuarPartidaPersistida() throws RemoteException;
+	List<Jugador> obtenerJugadoresPartidaPersistida() throws RemoteException;
+	Mensaje reasignarJugadoresPartidaPersistida(UUID id) throws RemoteException;
 }

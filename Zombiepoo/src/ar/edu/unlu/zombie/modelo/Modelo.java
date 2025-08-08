@@ -14,6 +14,7 @@ import ar.edu.unlu.zombie.modelo.entidades.Jugador;
 import ar.edu.unlu.zombie.modelo.entidades.Mazo;
 import ar.edu.unlu.zombie.modelo.enumerados.EventoGeneral;
 import ar.edu.unlu.zombie.modelo.enumerados.EventoJugador;
+import ar.edu.unlu.zombie.modelo.serializacion.AdministradorSerializacion;
 import ar.edu.unlu.zombie.recursos.Mensaje;
 import ar.edu.unlu.rmimvc.observer.IObservadorRemoto;
 import ar.edu.unlu.rmimvc.observer.ObservableRemoto;
@@ -34,10 +35,15 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
 	private Integer posicionJugadorActual = 0;
 	
 	private int jugadoresEnEspera = 0;
+	
+	private AdministradorSerializacion administradorSerializacion;
+	private boolean isPartidaRecuperada;
+	private List<Jugador> jugadoresAReasignar;
 		
 	public Modelo() {
 		this.observadores = new ArrayList<>();
 		this.jugadores = new ArrayList<Jugador>();
+		this.administradorSerializacion = new AdministradorSerializacion();
 	}
 	
 	@Override
@@ -50,6 +56,21 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
 		for(IObservadorRemoto observadorRemoto: observadores) {
 			observadorRemoto.actualizar(null, objeto);
 		}
+	}
+	
+	@Override
+	public List<Jugador> obtenerJugadores() throws RemoteException {
+		return this.jugadores;
+	}
+	
+	@Override
+	public int obtenerPosicionJugadorActual() throws RemoteException {
+		return this.posicionJugadorActual;
+	}
+	
+	@Override
+	public Stack<Carta> obtenerMazoParejas() throws RemoteException {
+		return this.mazoParejas;
 	}
 			
 	@Override
@@ -316,14 +337,23 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
 	    return ultimoJugadorActivo.getNombre();
 	}
 	
-	private void resetearJuego() {
+	@Override
+	public Boolean hayPartidaPersistida() throws RemoteException {
+		return this.administradorSerializacion.hayPartidaGuardada();
+	}
+	
+	private void resetearJuego() throws RemoteException {
 		this.cantidadJugadoresActuales = -1;
 		this.jugadores.clear();
 		this.mazoParejas.clear();
 		this.posicionJugadorActual = 0;
 		this.jugadoresEnEspera = 0;
+		if(hayPartidaPersistida()) {
+			this.administradorSerializacion.eliminarPartida();
+		}
 	}
 	
+	@Override
 	public Mensaje finalizarJuego() throws RemoteException {
 		if((jugadoresEnEspera ++) < cantidadJugadoresActuales) {
 			jugadoresEnEspera ++;
@@ -333,6 +363,7 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
 				    .build();
 		}
 		
+		jugadoresEnEspera = 0;
 		resetearJuego();
 		this.notificarObservadores(EventoGeneral.MOSTRAR_PANTALLA_MENU_PRINCIPAL);
 		return new Mensaje
@@ -340,5 +371,90 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
 			    .put("EventoJugador", EventoJugador.EVENTO_GLOBAL)
 			    .build();
 	}
+	
+	/*
+	 * SERIALIZACION
+	 */
+	
+	@Override
+	public void persistirPartida() throws RemoteException {
+		if(this.administradorSerializacion.persistirPartida(this)) {
+			this.notificarObservadores(EventoGeneral.PARTIDA_PERSISTIDA);
+		} else {
+			this.notificarObservadores(EventoGeneral.ERROR_PARTIDA_PERSISTIDA);
+		}
+	}
+	
+	private void recuperarPartida() throws RemoteException {
+		IModelo partidaRecuperada = this.administradorSerializacion.recuperarPartida();
+		
+		if(partidaRecuperada == null) {
+			this.notificarObservadores(EventoGeneral.ERROR_PARTIDA_RECUPERADA);
+			return;
+		}
+			
+		this.jugadores = partidaRecuperada.obtenerJugadores();
+		this.jugadoresAReasignar = this.jugadores;
+		this.cantidadJugadoresActuales = this.jugadores.size();
+		this.posicionJugadorActual = partidaRecuperada.obtenerPosicionJugadorActual();
+		this.jugadoresEnEspera = 0;
+		mazoParejas = partidaRecuperada.obtenerMazoParejas();
+				
+	}
+		
+	@Override
+	public Mensaje continuarPartidaPersistida() throws RemoteException {
+		
+		if(!isPartidaRecuperada) {
+			recuperarPartida();
+		}
+		
+		isPartidaRecuperada = true;
+		
+		if((jugadoresEnEspera ++) < cantidadJugadoresActuales) {
+			jugadoresEnEspera ++;
+			return new Mensaje
+					.Builder()
+				    .put("EventoJugador", EventoJugador.MOSTRAR_PANTALLA_ESPERA_JUGADORES)
+				    .build();
+		}
+		
+		jugadoresEnEspera = 0;
+		this.notificarObservadores(EventoGeneral.MOSTRAR_PANTALLA_NOMBRES_JUGADORES_PARTIDA_RECUPERADA);
+		return new Mensaje
+				.Builder()
+			    .put("EventoJugador", EventoJugador.EVENTO_GLOBAL)
+			    .build();
+	}
 
+	@Override
+	public List<Jugador> obtenerJugadoresPartidaPersistida() throws RemoteException {
+		return this.jugadoresAReasignar;
+	}
+	
+	@Override
+	public Mensaje reasignarJugadoresPartidaPersistida(UUID id) throws RemoteException {
+		
+		Jugador jugadorAEliminar = jugadores.stream()
+									        .filter(jugador -> jugador.getId().equals(id))
+									        .findFirst()
+									        .orElse(null);
+		
+	    jugadoresAReasignar.remove(jugadorAEliminar);
+		
+		if(!jugadoresAReasignar.isEmpty()) {
+			this.notificarObservadores(EventoGeneral.MOSTRAR_PANTALLA_NOMBRES_JUGADORES_PARTIDA_RECUPERADA);
+			return new Mensaje
+					.Builder()
+				    .put("EventoJugador", EventoJugador.MOSTRAR_PANTALLA_ESPERA_JUGADORES)
+				    .build();
+		}
+		
+		this.notificarObservadores(EventoGeneral.MOSTRAR_PANTALLA_RONDA_JUGADORES);
+		return new Mensaje
+				.Builder()
+			    .put("EventoJugador", EventoJugador.EVENTO_GLOBAL)
+			    .build();
+	}
+	
 }
