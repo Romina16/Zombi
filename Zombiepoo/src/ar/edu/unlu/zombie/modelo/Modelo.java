@@ -337,12 +337,20 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
 	    return ultimoJugadorActivo.getNombre();
 	}
 	
-	private void resetearJuego() {
+	@Override
+	public Boolean hayPartidaPersistida() throws RemoteException {
+		return this.administradorSerializacion.hayPartidaGuardada();
+	}
+	
+	private void resetearJuego() throws RemoteException {
 		this.cantidadJugadoresActuales = -1;
 		this.jugadores.clear();
 		this.mazoParejas.clear();
 		this.posicionJugadorActual = 0;
 		this.jugadoresEnEspera = 0;
+		if(hayPartidaPersistida()) {
+			this.administradorSerializacion.eliminarPartida();
+		}
 	}
 	
 	@Override
@@ -369,11 +377,6 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
 	 */
 	
 	@Override
-	public Boolean hayPartidaPersistida() throws RemoteException {
-		return this.administradorSerializacion.hayPartidaGuardada();
-	}
-	
-	@Override
 	public void persistirPartida() throws RemoteException {
 		if(this.administradorSerializacion.persistirPartida(this)) {
 			this.notificarObservadores(EventoGeneral.PARTIDA_PERSISTIDA);
@@ -396,7 +399,7 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
 		this.posicionJugadorActual = partidaRecuperada.obtenerPosicionJugadorActual();
 		this.jugadoresEnEspera = 0;
 		mazoParejas = partidaRecuperada.obtenerMazoParejas();
-		
+				
 	}
 		
 	@Override
@@ -440,7 +443,7 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
 	    jugadoresAReasignar.remove(jugadorAEliminar);
 		
 		if(!jugadoresAReasignar.isEmpty()) {
-			jugadoresEnEspera ++;
+			this.notificarObservadores(EventoGeneral.MOSTRAR_PANTALLA_NOMBRES_JUGADORES_PARTIDA_RECUPERADA);
 			return new Mensaje
 					.Builder()
 				    .put("EventoJugador", EventoJugador.MOSTRAR_PANTALLA_ESPERA_JUGADORES)

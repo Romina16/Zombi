@@ -415,28 +415,6 @@ public class Controlador implements IControlador, IControladorRemoto {
 			vista.mostrarMensajeError("Error: Remote Exception " + e.getMessage());
 		}
 	}
-    
-//	private void recuperarPartida() throws RemoteException {				
-//		this.modelo.recuperarPartida();
-//	}
-			
-//	private void reAsignarJugadores(ArrayList<String> jugadoresAReasignar) throws RemoteException {
-//		if(!this.jugadorReAsignado) {
-//			this.vista.initPanelReAsignarJugador(jugadoresAReasignar);
-//		}
-//	}
-//	
-//	public void reAsignarJugador(String nombreDeJugador) throws RemoteException {
-//		this.posicionJugador = this.modelo.reAsignarPosicionDeJugador(nombreDeJugador);
-//		
-//		this.jugadorReAsignado = true;
-//		
-//		Mensaje mensaje = this.modelo.actualizarEstadoReAsignacion(nombreDeJugador);
-//		
-//		if(mensaje.getEstadoModelo() == EstadoModelo.JUGADOR_REASIGNADO) {
-//			this.vista.initPanelEsperandoJugadores();
-//		}
-//	}
 	
 	@Override
 	public void actualizar(IObservableRemoto arg0, Object objeto) throws RemoteException {
@@ -463,17 +441,10 @@ public class Controlador implements IControlador, IControladorRemoto {
 				mostrarPanelPartidaPersistida();
 				break;
 			case MOSTRAR_PANTALLA_NOMBRES_JUGADORES_PARTIDA_RECUPERADA:
-				mostrarPanelNombresJugadoresPartidaPersistida();
-//				break;
-//			case PARTIDA_RECUPERADA:
-//				this.reAsignarJugadores(mensaje.getArrayList());
-//				break;
-//			case JUGADOR_REASIGNADO:
-//				this.reAsignarJugadores(mensaje.getArrayList());
-//				break;
-//			case CONTINUAR_PARTIDA_GUARDADA:
-//				this.estadoDeJugador(mensaje.getEntero());
-//				break;
+				if(this.jugadorAsignado == null) {
+					mostrarPanelNombresJugadoresPartidaPersistida();
+				}
+				break;
 			default:
 				break;				
 		}	

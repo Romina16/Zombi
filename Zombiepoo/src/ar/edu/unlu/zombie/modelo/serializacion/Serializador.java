@@ -42,13 +42,16 @@ public class Serializador implements Serializable {
 			ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(this.nombreArchivo)); 
 			Object objetoRecuperado = objectInputStream.readObject();
 			objectInputStream.close();
-			new File(this.nombreArchivo).delete();
 
 			return objetoRecuperado;
 			
 		} catch(Exception e) {
 			return null;
 		}
+	}
+	
+	public void eliminarObjeto() {
+		new File(this.nombreArchivo).delete();
 	}
 
 }

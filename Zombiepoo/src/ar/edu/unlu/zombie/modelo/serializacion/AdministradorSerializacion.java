@@ -24,4 +24,8 @@ public class AdministradorSerializacion implements Serializable {
 		return (IModelo) partidaSerializada.recuperarObjeto();
 	}
 	
+	public void eliminarPartida() {
+		partidaSerializada.eliminarObjeto();
+	}
+	
 }
