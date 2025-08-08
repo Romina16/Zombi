@@ -10,7 +10,7 @@ public class JPanelNombresJugadoresPartidaPersistida extends JPanel {
 	private IVista administradorVista;
 
 	public JPanelNombresJugadoresPartidaPersistida(IVista administradorVista) {
-
+			// PRUEBA
 	}
 
 }

@@ -23,12 +23,10 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JScrollPane;
 
 // para rotación
 import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 
 public class JPanelRondaJugadorTurno extends JPanel {
 
@@ -121,7 +119,6 @@ public class JPanelRondaJugadorTurno extends JPanel {
 		    JButton cartaOculta = new JButton();
 		    dibujarCartaRotadaDerecha(cartaOculta); 
 
-		   
 		    cartaOculta.addActionListener(e -> {
 		        System.out.println("Se tocó la carta derecha Nº: " + idx1);
 		        administradorVista.obtenerDatosCargaRondaJugadorTurno(String.valueOf(idx1));

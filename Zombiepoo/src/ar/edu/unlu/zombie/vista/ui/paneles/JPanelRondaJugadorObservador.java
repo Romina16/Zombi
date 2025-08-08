@@ -139,24 +139,24 @@ public class JPanelRondaJugadorObservador extends JPanel {
 				panelDerecha.add(Box.createVerticalStrut(13));
 			}
 		}*/
-		for (int i = 0; i < cantidadCartasJugadorDerecha; i++) {
-		    final int idx1 = i + 1; 
-
-		    JButton cartaOculta = new JButton();
-		    dibujarCartaRotadaDerecha(cartaOculta); 
-
-		   
-		    cartaOculta.addActionListener(e -> {
-		        System.out.println("Se tocó la carta derecha Nº: " + idx1);
-		        administradorVista.obtenerDatosCargaRondaJugadorTurno(String.valueOf(idx1));
-		    });
-
-		    panelDerecha.add(cartaOculta);
-		    if (i < cantidadCartasJugadorDerecha - 1) {
-		        panelDerecha.add(Box.createVerticalStrut(13)); 
-		    }
-		}
-		base.add(panelDerecha, BorderLayout.EAST);
+//		for (int i = 0; i < cantidadCartasJugadorDerecha; i++) {
+//		    final int idx1 = i + 1; 
+//
+//		    JButton cartaOculta = new JButton();
+//		    dibujarCartaRotadaDerecha(cartaOculta); 
+//
+//		   
+//		    cartaOculta.addActionListener(e -> {
+//		        System.out.println("Se tocó la carta derecha Nº: " + idx1);
+//		        administradorVista.obtenerDatosCargaRondaJugadorTurno(String.valueOf(idx1));
+//		    });
+//
+//		    panelDerecha.add(cartaOculta);
+//		    if (i < cantidadCartasJugadorDerecha - 1) {
+//		        panelDerecha.add(Box.createVerticalStrut(13)); 
+//		    }
+//		}
+//		base.add(panelDerecha, BorderLayout.EAST);
 
 		// Importante para OverlayLayout (que base ocupe todo)
 		base.setAlignmentX(0.5f);
