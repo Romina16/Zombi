@@ -44,10 +44,19 @@ public class JPanelMenuPrincipal extends JPanel {
 		panelMesa.setLayout(new BorderLayout());
 		panelMesa.setOpaque(false);
 		
-		JLabel LblTitulo = new JLabel("Zombie");
+		ImageIcon iconoTitulo = new ImageIcon(getClass().getResource("/ar/edu/unlu/zombie/vista/ui/recursos/imagenes/zombie.png"));
+
+		// Si querés escalar la imagen, podés hacerlo así:
+		Image imagenEscalada = iconoTitulo.getImage().getScaledInstance(300, 100, Image.SCALE_SMOOTH);
+		ImageIcon iconoEscalado = new ImageIcon(imagenEscalada);
+
+		JLabel LblTitulo = new JLabel(iconoEscalado);
+		LblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		/*JLabel LblTitulo = new JLabel("Zombie");
 		LblTitulo.setForeground(Color.GREEN.darker()); // Verde zombie
 		LblTitulo.setFont(new Font("SansSerif", Font.BOLD, 36)); // Fuente grande y negrita
-		LblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+		LblTitulo.setHorizontalAlignment(SwingConstants.CENTER);*/
 		
 		JButton btnInicioJuego = crearBotonEstilizado("Iniciar Juego");
 		//JButton btnInicioJuego = new JButton("Inicio");

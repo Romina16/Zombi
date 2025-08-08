@@ -25,7 +25,8 @@ import ar.edu.unlu.zombie.interfaces.IVista;
 public class JPanelFinalRonda extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private IVista administradorVista;
-
+	private String nombreJugadorPerdedor;
+	
 	public JPanelFinalRonda(IVista administradorVista) {
 		this.administradorVista = administradorVista;
 		setSize(900, 700);
@@ -56,22 +57,28 @@ public class JPanelFinalRonda extends JPanel {
 		panelNombres.setLayout(new BoxLayout(panelNombres, BoxLayout.Y_AXIS));
 		panelNombres.setOpaque(false);
 		
+		JLabel LblsubTitulo = new JLabel("Jugador perdedor: " );
+		LblsubTitulo.setForeground(Color.GREEN.darker()); // Verde zombie
+		LblsubTitulo.setFont(new Font("Serif", Font.BOLD, 30)); // Fuente grande y negrita
+		LblsubTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+		LblsubTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		/*for (String nombreJugador : nombresJugadores) {
-			JLabel lblNombre = new JLabel(nombreJugador);
-			lblNombre.setFont(new Font("Serif", Font.PLAIN, 24));
-			lblNombre.setForeground(Color.WHITE);
-			lblNombre.setAlignmentX(Component.CENTER_ALIGNMENT);
-			panelNombres.add(lblNombre);
-			panelNombres.add(Box.createVerticalStrut(15));
-		}*/
+		this.obtenerDatosPanel();	
+		JLabel LblNombrePerdedor = new JLabel(nombreJugadorPerdedor);// 
+		LblNombrePerdedor.setForeground(Color.GREEN.darker()); // Verde zombie
+		LblNombrePerdedor.setFont(new Font("Serif", Font.BOLD, 30)); // Fuente grande y negrita
+		LblNombrePerdedor.setHorizontalAlignment(SwingConstants.CENTER);
+		LblNombrePerdedor.setAlignmentX(Component.CENTER_ALIGNMENT);
+		
+		panelNombres.add(LblsubTitulo);
+		panelNombres.add(LblNombrePerdedor);
 		
 		//boton Continuar
 		JButton btnContinuar = crearBotonEstilizado("Continuar");
 		//JButton Continuar = new JButton("Continuar");
 		btnContinuar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				 administradorVista.iniciarRonda();
+				 administradorVista.volverAlMenuPrincipal();;
 			}
 		});
 		
@@ -95,7 +102,9 @@ public class JPanelFinalRonda extends JPanel {
 		this.add(Completo, BorderLayout.CENTER);
 	}
 	
-	
+	private void obtenerDatosPanel() {
+    	nombreJugadorPerdedor = administradorVista.obtenerNombreJugadorPerdedor();
+    }
 	
 	
 	//Estilo de los botones
