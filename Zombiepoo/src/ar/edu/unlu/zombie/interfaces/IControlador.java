@@ -1,15 +1,17 @@
 package ar.edu.unlu.zombie.interfaces;
 
 import java.util.List;
+import java.util.UUID;
 
 import ar.edu.unlu.zombie.modelo.dto.CartaDTO;
+import ar.edu.unlu.zombie.modelo.dto.JugadorDTO;
 
 public interface IControlador {
 	void setVista(IVista vista);
 	int obtenerCantidadMinimaJugadores();
 	int obtenerCantidadMaximaJugadores();
 	void mostrarPanelMenuPrincipal();
-	void mostrarPanelIniciarJuego();
+	void iniciarJuego();
 	void mostrarPanelDefinirCantidadJugadores();
 	void obtenerDatosCargaCantidadJugadores(String cantidadJugadores);
 	void mostrarPanelEsperaJugadores();
@@ -27,4 +29,11 @@ public interface IControlador {
 	void mostrarPanelFinalRonda();
 	String obtenerNombreJugadorPerdedor();
 	void volverAlMenuPrincipal();
+	void persistirPartida();
+	void continuarPartidaPersistida();
+	void mostrarPanelNombresJugadoresPartidaPersistida();
+	void mostrarPanelPartidaPersistida();
+	Boolean hayPartidaPersistida();
+	List<JugadorDTO> obtenerJugadoresPartidaPersistida();
+	void obtenerDatosCargaJugadorPartidaPersistida(UUID id);
 }

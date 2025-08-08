@@ -29,8 +29,8 @@ public class AppCliente {
 		);
 		
 		Controlador controlador = new Controlador();
-        IVista vista = new AdministradorVistaUI();   
-        //IVista vista = new AdministradorVistaConsola();   
+        //IVista vista = new AdministradorVistaUI();   
+        IVista vista = new AdministradorVistaConsola();   
         
         vista.setControlador(controlador);
         controlador.setVista(vista);

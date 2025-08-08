@@ -53,7 +53,7 @@ public class JPanelMenuPrincipal extends JPanel {
 		//JButton btnInicioJuego = new JButton("Inicio");
 		btnInicioJuego.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				administradorVista.mostrarPanelIniciarJuego();
+				administradorVista.iniciarJuego();
 			}
 		});
 		
