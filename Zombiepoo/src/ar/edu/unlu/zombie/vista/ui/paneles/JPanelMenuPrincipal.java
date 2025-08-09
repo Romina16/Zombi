@@ -44,6 +44,10 @@ public class JPanelMenuPrincipal extends JPanel {
 		panelMesa.setLayout(new BorderLayout());
 		panelMesa.setOpaque(false);
 		
+		JPanel ListadoMenu = new JPanel();//(new GridLayout(2,1,10,10));
+		ListadoMenu.setOpaque(false);  // Hace que no se tape el fondo
+		ListadoMenu.setLayout(new BoxLayout(ListadoMenu, BoxLayout.Y_AXIS));
+		
 		ImageIcon iconoLogo = new ImageIcon(getClass().getResource("/ar/edu/unlu/zombie/vista/ui/recursos/imagenes/zmb.png"));
 
 		// Si querés escalar la imagen, podés hacerlo así:
@@ -54,6 +58,8 @@ public class JPanelMenuPrincipal extends JPanel {
 		JLabel LblTitulo1 = new JLabel(iconoEscalado1);
 		LblTitulo1.setHorizontalAlignment(SwingConstants.CENTER);
 		
+		ListadoMenu.add(LblTitulo1);
+		ListadoMenu.add(Box.createVerticalStrut(20));
 		
 		ImageIcon iconoTitulo = new ImageIcon(getClass().getResource("/ar/edu/unlu/zombie/vista/ui/recursos/imagenes/zombie.png"));
 
@@ -63,6 +69,9 @@ public class JPanelMenuPrincipal extends JPanel {
 
 		JLabel LblTitulo = new JLabel(iconoEscalado);
 		LblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+		
+		ListadoMenu.add(LblTitulo);
+		ListadoMenu.add(Box.createVerticalStrut(20));
 		
 		/*JLabel LblTitulo = new JLabel("Zombie");
 		LblTitulo.setForeground(Color.GREEN.darker()); // Verde zombie
@@ -78,16 +87,25 @@ public class JPanelMenuPrincipal extends JPanel {
 		});
 		
 		btnInicioJuego.setAlignmentX(Component.CENTER_ALIGNMENT);
-		//**
-		JButton btnContinuar = crearBotonEstilizado("Continuar");
-		btnContinuar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) { //evento salir
-				administradorVista.continuarPartidaPersistida();
-			}
-		});
 		
-		btnContinuar.setAlignmentX(Component.CENTER_ALIGNMENT);
-		//**
+		ListadoMenu.add(btnInicioJuego);
+		ListadoMenu.add(Box.createVerticalStrut(20));
+		
+		if(administradorVista.hayPartidaPersistida()) {
+			
+			JButton btnContinuar = crearBotonEstilizado("Continuar");
+			btnContinuar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					administradorVista.continuarPartidaPersistida();
+				}
+			});
+			
+			btnContinuar.setAlignmentX(Component.CENTER_ALIGNMENT);
+			
+			ListadoMenu.add(Box.createVerticalStrut(20));
+			ListadoMenu.add(btnContinuar);
+		
+		}
 		
 		JButton btnSalir = crearBotonEstilizado("Salir");
 		btnSalir.addActionListener(new ActionListener() {
@@ -97,20 +115,23 @@ public class JPanelMenuPrincipal extends JPanel {
 		});
 		
 		btnSalir.setAlignmentX(Component.CENTER_ALIGNMENT);
-	
-		JPanel ListadoMenu = new JPanel();//(new GridLayout(2,1,10,10));
-		ListadoMenu.setOpaque(false);  // Hace que no se tape el fondo
-		ListadoMenu.setLayout(new BoxLayout(ListadoMenu, BoxLayout.Y_AXIS));
 		
-		ListadoMenu.add(LblTitulo1);
-		ListadoMenu.add(Box.createVerticalStrut(20));
-		ListadoMenu.add(LblTitulo);
-		ListadoMenu.add(Box.createVerticalStrut(20));
-		ListadoMenu.add(btnInicioJuego);
-		ListadoMenu.add(Box.createVerticalStrut(20));
-		ListadoMenu.add(btnContinuar);
 		ListadoMenu.add(Box.createVerticalStrut(20));
 		ListadoMenu.add(btnSalir);
+	
+//		JPanel ListadoMenu = new JPanel();//(new GridLayout(2,1,10,10));
+//		ListadoMenu.setOpaque(false);  // Hace que no se tape el fondo
+//		ListadoMenu.setLayout(new BoxLayout(ListadoMenu, BoxLayout.Y_AXIS));
+		
+//		ListadoMenu.add(LblTitulo1);
+//		ListadoMenu.add(Box.createVerticalStrut(20));
+//		ListadoMenu.add(LblTitulo);
+//		ListadoMenu.add(Box.createVerticalStrut(20));
+//		ListadoMenu.add(btnInicioJuego);
+//		ListadoMenu.add(Box.createVerticalStrut(20));
+//		ListadoMenu.add(btnContinuar);
+//		ListadoMenu.add(Box.createVerticalStrut(20));
+//		ListadoMenu.add(btnSalir);
 				
 		LblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
 		JPanel Menu = new JPanel(new GridBagLayout());

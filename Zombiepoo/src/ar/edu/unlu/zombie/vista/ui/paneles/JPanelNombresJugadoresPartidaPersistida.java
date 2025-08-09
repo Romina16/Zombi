@@ -82,7 +82,7 @@ public class JPanelNombresJugadoresPartidaPersistida extends JPanel {
 
 	        final int idx = i; // índice real
 	        btnNombre.addActionListener(e -> {
-	            System.out.println("Seleccionaste jugador " + (idx + 1) + ": " + jugador.getNombre());
+	            System.out.println("Seleccionaste jugador " + (idx) + ": " + jugador.getNombre());
 	            administradorVista.obtenerDatosCargaJugadorPartidaPersistida(
 	                jugadoresPartidaPersistida.get(idx).getId()
 	            );

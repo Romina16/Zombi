@@ -21,17 +21,36 @@ public class AppCliente {
 
 		String portCliente = (String) JOptionPane.showInputDialog(
 			null, 
-			"Seleccione el puerto en el que escuchar� peticiones el cliente", "Puerto del cliente", 
+			"Seleccione el puerto en el que escuchar� peticiones el cliente", 
+			"Puerto del cliente", 
 			JOptionPane.QUESTION_MESSAGE,
 			null,
 			null,
 			9998
 		);
 		
+		String[] opciones = {"Vista Grafica", "Consola"};
+		
+	    int seleccion = JOptionPane.showOptionDialog(
+            null, 
+            "Seleccione el tipo de vista que desea:", 
+            "Vista de la aplicación",
+            JOptionPane.DEFAULT_OPTION, 
+            JOptionPane.QUESTION_MESSAGE, 
+            null, 
+            opciones,
+            opciones[0]
+	    );
+		
 		Controlador controlador = new Controlador();
-        IVista vista = new AdministradorVistaUI();   
-        //IVista vista = new AdministradorVistaConsola();   
-        
+		
+		IVista vista;
+		if(seleccion == 0) {
+			vista = new AdministradorVistaUI();
+		} else {
+			vista = new AdministradorVistaConsola();
+		}
+           
         vista.setControlador(controlador);
         controlador.setVista(vista);
  

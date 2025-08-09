@@ -348,9 +348,6 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
 		this.mazoParejas.clear();
 		this.posicionJugadorActual = 0;
 		this.jugadoresEnEspera = 0;
-		if(hayPartidaPersistida()) {
-			this.administradorSerializacion.eliminarPartida();
-		}
 	}
 	
 	@Override
@@ -407,9 +404,9 @@ public class Modelo extends ObservableRemoto implements IModelo, Serializable {
 		
 		if(!isPartidaRecuperada) {
 			recuperarPartida();
+			//this.administradorSerializacion.eliminarPartida();
+			isPartidaRecuperada = true;
 		}
-		
-		isPartidaRecuperada = true;
 		
 		if((jugadoresEnEspera ++) < cantidadJugadoresActuales) {
 			jugadoresEnEspera ++;
